@@ -137,32 +137,15 @@ jcmp.events.Add('battleroyale_start_battle', function() {
 
   // Timer to set the area battle
 
-  BRGame.reduceArea_timer = setInterval(function() { // launch the timer to reduce the area
-    jcmp.events.Call('battleroyale_update_area', BRGame);
-  }, battleroyale.utils.MinToMs(2));
 
   battleroyale.game.games.push(BRGame);
+
   setTimeout(function() {
     // the game is X min
     jcmp.events.Call('battleroyale_end_battle');
   }, battleroyale.utils.MinToMs(battleroyale.game.battleduration))
 });
 
-jcmp.events.Add('battleroyale_update_area', function(BRGame) {
-
-//  BRGame.broadcast("The battle area is reduce check area distance", battleroyale.config.colours.red);
-  BRGame.radius = BRGame.radius / 2;
-  for(let player of BRGame.players) {
-    jcmp.events.CallRemote('battleroyale_radius_client',player,BRGame.radius);
-    jcmp.events.CallRemote('battleroyale_area_reduced_client_true',player);
-    setTimeout(() => {
-      jcmp.events.CallRemote("battleroyale_area_reduced_client_false", player);
-    }, 8000);
-
-
-  }
-
-});
 
 
 jcmp.events.Add('battleroyale_end_battle', function(BRGame) // need to rewrite
@@ -170,17 +153,14 @@ jcmp.events.Add('battleroyale_end_battle', function(BRGame) // need to rewrite
 let highscore = 0;
 let highplayerscorename;
 for(var i=0; i < BRGame.players.length; i++){
-  // loop on all player
-    if (BRGame.players[i].kills >= highscore) // if the player have a scrore egal or higher it change the highscore and it's loop on all player
-                                              // so if 1 player are score 10 and are at  the place 5 on the array and an other have a score of 11 at the place 10
-                                              // the highscore value will be at 10 between the player 5 and 10 then it will be 11
+    if (BRGame.players[i].kills >= highscore)
     {
       highscore = BRGame.players[i].battleroyale.kills;
       highplayerscorename = BRGame.players[i].name;
     }
 }
 
-  console.log("winner is : " + highplayerscorename + " with a score of : " + highscore )
+  console.log("Winner is : " + highplayerscorename + " with a score of : " + highscore )
   BRGame.players.forEach(function(player){
     jcmp.events.CallRemote('battleroyale_UI_Hide',player);
     jcmp.events.CallRemote('outarea_toggle', player, false);
@@ -204,6 +184,7 @@ for(var i=0; i < BRGame.players.length; i++){
     // Delete interval
     battleroyale.game.players.ingame.removePlayer(player);
     player.dimension = 0;
+    player.battleroyale.kills = 0;
     player.battleroyale.game = undefined;
     player.battleroyale.ingame = false;
     battleroyale.game.players.onlobby.push(player);
