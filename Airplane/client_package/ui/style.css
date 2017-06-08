@@ -176,3 +176,106 @@ div.betawarning{
    height: 20px;
 
  }
+
+
+#scoreboard {
+    background: rgba(0, 0, 0, 0.65);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transform: translate(-50%, -50%) scale(0);
+    max-width: 1024px;
+    -webkit-border-radius: 6px;
+    -webkit-user-select: none;
+    -webkit-transition: all 100ms linear;
+}
+
+#scoreboard .helper {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    text-align: right;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+#scoreboard .helper span {
+    color: #ffcc00;
+}
+
+#scoreboard.visible {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transform: translate(-50%, -50%) scale(1);
+}
+
+#scoreboard.scrollable {
+    z-index: 1000;
+}
+
+#scoreboard .row {
+    padding: 10px;
+}
+
+#scoreboard .row .column {
+    position: relative;
+}
+
+#scoreboard .row .column:first-child {
+    -webkit-flex: 0.5;
+}
+
+#scoreboard .row .column:nth-child(2) {
+    -webkit-flex: 4;
+    padding-left: 30px;
+}
+
+#scoreboard .row .column:not(:first-child):not(:nth-child(2)) {
+    text-align: center;
+}
+
+#scoreboard .row .column img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    -webkit-transform: translateY(-50%);
+}
+
+#scoreboard .header {
+    font-weight: bold;
+    color: #ffffff;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}
+
+#scoreboard .players {
+    font-size: 14px;
+    font-weight: bold;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: scroll;
+    border: 6px solid transparent;
+    border-top: none;
+    -webkit-border-radius: 6px;
+}
+
+#scoreboard .players .row {
+    background-color: rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+}
+
+#scoreboard .players .row:last-child {
+    border-bottom: none;
+}
+
+#scoreboard .players .row:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.55);
+}
