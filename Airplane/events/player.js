@@ -129,26 +129,6 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
 
 
 
-/*
-  if(player.battleroyale.ingame && player.battleroyale.deaths >= 10) {
-    jcmp.events.Call('battleroyale_player_leave_game', player);
-    /* Not sure for this one
-      battleroyale.chat.send(player, 'You will be respawned in the lobby.', battleroyale.config.colours.purple);
-
-    const pos = battleroyale.config.game.lobbypos;
-    const done = battleroyale.workarounds.watchPlayer(player, setTimeout(() => {
-      done();
-      player.respawnPosition = pos;
-      player.Respawn();
-      jcmp.events.CallRemote("battleroyale_deathui_hide", player);
-    }, 4000));
-    let dataneed = {
-      ingame:battleroyale.game.players.onlobby.length,
-      need:battleroyale.config.game.minPlayers
-  };
-  jcmp.events.CallRemote("battleroyale_playerneed_client",null,JSON.stringify(dataneed));
-  }*/
-
 if (player.battleroyale.ingame){
     battleroyale.chat.send(player, 'You will be respawned on the arena.', battleroyale.config.colours.purple);
 

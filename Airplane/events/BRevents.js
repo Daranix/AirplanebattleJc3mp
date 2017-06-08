@@ -125,7 +125,7 @@ jcmp.events.Add('battleroyale_start_battle', function() {
     battleroyale.game.players.ingame.push(p);
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[battleroyale.utils.random(0, spawnplayer.length -1)]; // take a random spawn
-    p.position = new Vector3f (randomspawn.x,randomspawn.y,randomspawn.z);
+    p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
     p.weapons.forEach(function(weapon){
        p.RemoveWeapon(weapon.modelHash);
      })
