@@ -129,6 +129,8 @@ jcmp.events.Add('battleroyale_start_battle', function() {
     p.weapons.forEach(function(weapon){
        p.RemoveWeapon(weapon.modelHash);
      })
+     var vehicle = new Vehicle(448735752, p.position, p.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
+     vehicle.SetOccupant(0, p); //Assign the player to the driver seat
   })
 
   BRGame.aliveStarted = BRGame.players.length;
@@ -189,82 +191,9 @@ for(var i=0; i < BRGame.players.length; i++){
     player.battleroyale.ingame = false;
     battleroyale.game.players.onlobby.push(player);
    })
-   /*
-  console.log('Battle end left players ' + BRGame.players.length);
-  if(BRGame.players.length >= 2) {
-    // if they are 2 guys stay ( for team battle)
-
-  } else if(BRGame.players.length < 1) {
-    console.log("No winner :(")
-  } else if (BRGame.players.length == 1) {
-    //console.log(BRGame.players);
-    var player = BRGame.players[0];
-    jcmp.events.CallRemote('battleroyale_UI_Hide',player);
-    jcmp.events.CallRemote('outarea_toggle', player, false);
-    jcmp.events.CallRemote('battleroyale_playeringame_false',player);
-    jcmp.events.CallRemote('battleroyale_POI_Delete',player);
-
-    // Winner
-  //  battleroyale.utils.broadcastToLobby(player + " was the winner of a battle");
-    jcmp.events.CallRemote('battleroyale_winner_client_name',null,player.escapedNametagName);
-
-
-  //  battleroyale.chat.send(player, "You won a battle");
-    jcmp.events.CallRemote('battleroyale_winner_client_true',player);
-    jcmp.events.CallRemote('battleroyale_winner_client_true_all',null);
-
-
-    setTimeout(() => {
-      jcmp.events.CallRemote("battleroyale_winner_client_false", player);
-      jcmp.events.CallRemote('battleroyale_winner_client_false_all',null);
-    }, 10000);
-
-
-    // Delete interval
-    battleroyale.game.players.ingame.removePlayer(player);
-    player.dimension = 0;
-    player.battleroyale.game = undefined;
-    player.battleroyale.ingame = false;
-    battleroyale.game.players.onlobby.push(player);
-  }
-
-  clearInterval(BRGame.reduceArea_timer);
-  battleroyale.game.games.remove(BRGame);
-
-*/
-});
-/*
-jcmp.events.Add("battleroyale_player_leave_game", function(player, destroy) {
-
-  // Broadcast msg to all players on that game with the current players left
-  // Delete player from game the BRGame object
-
-  player.battleroyale.game.players.removePlayer(player);
-  player.battleroyale.ready = false;
-  player.battleroyale.ingame = false;
-  jcmp.events.CallRemote('battleroyale_UI_Hide',player);
-  jcmp.events.CallRemote('outarea_toggle', player, false);
-  jcmp.events.CallRemote('battleroyale_playeringame_false',player);
-  jcmp.events.CallRemote('battleroyale_POI_Delete',player);
-  battleroyale.game.players.ingame.removePlayer(player);
-  player.battleroyale.game.broadcast((player.battleroyale.game.players.length) + " of " + player.battleroyale.game.aliveStarted + " left "); // need to replace by UI
-  player.dimension = 0;
-  if(player.battleroyale.game.players.length <= 1) { // if he whas the last guys ingame
-    // End the battle
-    console.log("Ending battle " + player.battleroyale.game.id);
-    console.log(player.battleroyale.game);
-    jcmp.events.Call('battleroyale_end_battle', player.battleroyale.game);
-  }
-
-  console.log("Removing player from game array players");
-
-  console.log("Players in array: " + player.battleroyale.game.players.length);
-  if(!destroy) {
-    battleroyale.game.players.onlobby.push(player);
-  }
 
 });
-*/
+
 jcmp.events.Add('battleroyale_player_outarea', function() {
 
   battleroyale.game.players.ingame.forEach(function(player) {
