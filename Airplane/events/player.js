@@ -99,6 +99,20 @@ console.log("battleroyale_UI_ready" + player);
     need:battleroyale.config.game.minPlayers
 };
 jcmp.events.CallRemote("battleroyale_playerneed_client",null,JSON.stringify(dataneed));
+const data = {
+        players: jcmp.players.map(p => ({
+            id: p.networkId,
+            name: p.escapedNametagName,
+            colour: p.freeroam.colour,
+            kills: p.freeroam.kills,
+            deaths: p.freeroam.deaths,
+            passiveMode: p.freeroam.passiveMode,
+            isAdmin: freeroam.utils.isAdmin(p)
+        }))
+    };
+
+    jcmp.events.CallRemote("battleroyale_init", player, JSON.stringify(data));
+
 });
 
 jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
@@ -115,6 +129,12 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
       if (typeof killer.escapedNametagName !== 'undefined') {
         killer.battleroyale.kills++;
 
+        killer_data = {
+          networkId: killer.networkId,
+          kills: killer.freeroam.kills,
+          deaths: killer.freeroam.deaths
+        };
+
         jcmp.events.CallRemote("battleroyale_deathui_show", player);
       } else {
         death_message = 'was squashed';
@@ -127,6 +147,15 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
   }
   jcmp.events.CallRemote("battleroyale_die_client_appear", null, player.escapedNametagName);
 
+  const data = {
+      player: {
+        networkId: player.networkId,
+        kills: player.freeroam.kills,
+        deaths: player.freeroam.deaths
+      },
+      killer: killer_data,
+    };
+    jcmp.events.CallRemote("battleroyale_player_death", null, JSON.stringify(data));
 
 
 if (player.battleroyale.ingame){

@@ -78,6 +78,16 @@ function IsPointInCircle(v1, v2, radius) {
     const playerCache = createCache(data.id, data.name, data.colour);
     playerCache.isAdmin = data.isAdmin;
     playersCache[data.id] = playerCache;
+    jcmp.ui.CallEvent('battleroyale_scoreboard_addplayer', JSON.stringify({
+        id: data.id,
+        name: data.name,
+        colour: data.colour,
+        kills: 0,
+        deaths: 0,
+        isAdmin: data.isAdmin,
+        isLocalPlayer: data.id === jcmp.localPlayer.networkId
+    }));
+
   });
 
   jcmp.events.AddRemoteCallable('battleroyale_Brgame_client', function(data,id) {
@@ -179,7 +189,27 @@ function battleroyale_check_poi(){
         jcmp.events.CallRemote('battleroyale_player_spawned');
       });
 
-      jcmp.ui.AddEvent('battleroyale_ready', () => {
+      jcmp.ui.AddEvent('battleroyale_ready', (data) => {
+        data = JSON.parse(data);
+
+            data.players.forEach(p => {
+                const playerCache = createCache(p.id, p.name, p.colour);
+                playerCache.stats.kills = p.kills;
+                playerCache.stats.deaths = p.deaths;
+                playerCache.flags.passiveMode = p.passiveMode;
+                playerCache.flags.isAdmin = p.isAdmin;
+
+                jcmp.ui.CallEvent('battleroyale_scoreboard_addplayer', JSON.stringify({
+                    id: p.id,
+                    name: p.name,
+                    colour: p.colour,
+                    kills: p.kills,
+                    deaths: p.deaths,
+                    isAdmin: p.isAdmin,
+                    isLocalPlayer: p.id === jcmp.localPlayer.networkId
+                }));
+            });
+
         jcmp.events.CallRemote('battleroyale_UI_ready');
       });
 
@@ -192,6 +222,7 @@ function battleroyale_check_poi(){
       });
 
       jcmp.events.AddRemoteCallable('battleroyale_player_destroyed', (networkId) => {
+        jcmp.ui.CallEvent('battleroyale_scoreboard_removeplayer', networkId);
         if (playersCache[networkId] !== null)
         delete playersCache[networkId];
       });
@@ -237,6 +268,26 @@ jcmp.events.AddRemoteCallable('battleroyale_winner_client_false_all', () => {
   jcmp.ui.CallEvent('battleroyale_winner_toggleforall', false);
 });
 
+jcmp.events.AddRemoteCallable('battleroyale_player_death', (data) => {
+    data = JSON.parse(data);
+
+    let cache = playersCache[data.player.networkId];
+    if (typeof cache !== 'undefined') {
+        jcmp.ui.CallEvent('battleroyale_scoreboard_updateplayer', data.player.networkId, data.player.kills, data.player.deaths);
+        cache.stats.kills = data.player.kills;
+        cache.stats.deaths = data.player.deaths;
+    }
+
+    if (typeof data.killer !== 'undefined') {
+        cache = playersCache[data.killer.networkId];
+        if (typeof cache !== 'undefined') {
+            jcmp.ui.CallEvent('battleroyale_scoreboard_updateplayer', data.killer.networkId, data.killer.kills, data.killer.deaths);
+            cache.stats.kills = data.killer.kills;
+            cache.stats.deaths = data.killer.deaths;
+        }
+    }
+
+});
 
 
 
