@@ -46,7 +46,7 @@
 }
 #peopledielist{
   position: fixed;
-  top: 30%;
+  top: 29%;
   left:88%;
   font-size: 20px;
   font-family: 'Bungee', cursive;
@@ -56,9 +56,13 @@
 #peoplebeforelanunch{
   position: fixed;
   top: 5%;
-  left:35%;
-  font-size: 35px;
-font-family: 'Bungee', cursive;
+  left:27%;
+  font-size: 36px;
+  font-family: 'Bungee', cursive;
+}
+#intplayerneed{
+    font-size: 45px;
+
 }
 #reducearea{
   position: fixed;
