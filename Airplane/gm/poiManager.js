@@ -10,7 +10,7 @@ class PointOfInterest {
 
     createForPlayer(player) {
         // could just JSON.stringify(this) but then we get some un-needed vector stuff
-        jcmp.events.CallRemote('battleroyale_create_poi', player, JSON.stringify({
+        jcmp.events.CallRemote('airplanebattle_create_poi', player, JSON.stringify({
             uid: this.uid,
             type: this.type,
             label: this.label,
@@ -21,7 +21,7 @@ class PointOfInterest {
     }
 
     destroyForPlayer(player) {
-        jcmp.events.CallRemote('battleroyale_destroy_poi', player, this.uid);
+        jcmp.events.CallRemote('airplanebattle_destroy_poi', player, this.uid);
     }
 }
 

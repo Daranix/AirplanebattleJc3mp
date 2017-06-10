@@ -15,7 +15,7 @@
             $death_messages = [],
 
 
-            jcmp.AddEvent('battleroyale_deathui_toggle', function(toggle) {
+            jcmp.AddEvent('airplanebattle_deathui_toggle', function(toggle) {
           if (toggle) {
               $deathui.addClass('visible');
           } else {
@@ -23,7 +23,7 @@
           }
       });
 
-jcmp.AddEvent('battleroyale_accueil_toggle', (screen_visible) => {
+jcmp.AddEvent('airplanebattle_accueil_toggle', (screen_visible) => {
   if(screen_visible) {
       $('#accueil').show();
   } else {
@@ -31,7 +31,7 @@ jcmp.AddEvent('battleroyale_accueil_toggle', (screen_visible) => {
 
   }
 });
-jcmp.AddEvent('battleroyale_winner_toggle', (screen_visible) => {
+jcmp.AddEvent('airplanebattle_winner_toggle', (screen_visible) => {
   if(screen_visible) {
       $('#winner').show();
 
@@ -41,7 +41,7 @@ jcmp.AddEvent('battleroyale_winner_toggle', (screen_visible) => {
   }
 });
 
-jcmp.AddEvent('battleroyale_winner_toggleforall', (screen_visible) => {
+jcmp.AddEvent('airplanebattle_winner_toggleforall', (screen_visible) => {
   if(screen_visible) {
       $('#isthewinner').show();
 
@@ -51,7 +51,7 @@ jcmp.AddEvent('battleroyale_winner_toggleforall', (screen_visible) => {
   }
 });
 
-jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
+jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
    $("#winnername").text(playername);
  });
 
@@ -83,23 +83,23 @@ jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
                 }
             });
 
-            jcmp.AddEvent('battleroyale_outarea_timer_html',(time)=>{
+            jcmp.AddEvent('airplanebattle_outarea_timer_html',(time)=>{
               $("#timer").text(parseInt(time) + " Sec");
             });
 
 
-            jcmp.AddEvent('battleroyale_healthbar_update', (num) => {
+            jcmp.AddEvent('airplanebattle_healthbar_update', (num) => {
               let hp = ((1 - num) * 100) + "%";
               let path = "polygon(0 " + hp + ", 100% " + hp + ", 100% 100%, 0 100%)";
               $("div.inside").css({"clip-path": path});
             });
 
-            jcmp.AddEvent('battleroyale_distance_update',(distance)=>{
+            jcmp.AddEvent('airplanebattle_distance_update',(distance)=>{
                $("#radiusdistance").text(parseInt(distance));
              });
 
 
-             jcmp.AddEvent('battleroyale_radius_update',(distance)=>{
+             jcmp.AddEvent('airplanebattle_radius_update',(distance)=>{
                 $("#areadistance").text(distance);
               });
               Array.prototype.remove = function(val) {
@@ -110,7 +110,7 @@ jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
 
               let arraydie = [];
               let removename = false;
-              jcmp.AddEvent('battleroyale_die_update',(playedie)=>{
+              jcmp.AddEvent('airplanebattle_die_update',(playedie)=>{
                 arraydie.push(playedie);
                 if (arraydie.length > 0){
                   $("#playerdie").text(arraydie[0] + " died");
@@ -122,7 +122,7 @@ jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
                 }
                });
 
-               jcmp.AddEvent('battleroyale_die_list', (screen_visible) => {
+               jcmp.AddEvent('airplanebattle_die_list', (screen_visible) => {
                    if(screen_visible) {
                        $('#peopledielist').show();
                    } else {
@@ -130,7 +130,7 @@ jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
                    }
                });
 
-               jcmp.AddEvent('battleroyale_area_reduced', (screen_visible) => {
+               jcmp.AddEvent('airplanebattle_area_reduced', (screen_visible) => {
                    if(screen_visible) {
                        $('#reducearea').show();
                    } else {
@@ -138,9 +138,9 @@ jcmp.AddEvent('battleroyale_win_playername',(playername)=>{
                    }
                });
 
-            jcmp.CallEvent('battleroyale_ready'); // Ui Ready
+            jcmp.CallEvent('airplanebattle_ready'); // Ui Ready
 
-            jcmp.AddEvent('battleroyale_playerneed_launch',(numberplayerneed)=>{
+            jcmp.AddEvent('airplanebattle_playerneed_launch',(numberplayerneed)=>{
                $("#intplayerneed").text(numberplayerneed);
              });
 

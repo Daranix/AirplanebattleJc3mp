@@ -1,5 +1,5 @@
 
-global.battleroyale = {
+global.airplanebattle = {
     commands: jcmp.events.Call('get_command_manager')[0],
     chat: jcmp.events.Call('get_chat')[0],
     config: require('./gm/config'),
@@ -29,37 +29,23 @@ global.battleroyale = {
 };
 
 function main() {
-  console.log("+==========================================================================================+");
-  console.log('\
-  888888b.            888    888    888          8888888b.                             888\n\
-  888  "88b           888    888    888          888   Y88b                            888          \n\
-  888  .88P           888    888    888          888    888                            888          \n\
-  8888888K.   8888b.  888888 888888 888  .d88b.  888   d88P  .d88b.  888  888  8888b.  888  .d88b.  \n\
-  888  "Y88b     "88b 888    888    888 d8P  Y8b 8888888P"  d88""88b 888  888     "88b 888 d8P  Y8b \n\
-  888    888 .d888888 888    888    888 88888888 888 T88b   888  888 888  888 .d888888 888 88888888 \n\
-  888   d88P 888  888 Y88b.  Y88b.  888 Y8b.     888  T88b  Y88..88P Y88b 888 888  888 888 Y8b.     \n\
-  8888888P"  "Y888888  "Y888  "Y888 888  "Y8888  888   T88b  "Y88P"   "Y88888 "Y888888 888  "Y8888  \n\
-                                                                        888                       \n\
-                                                                   Y8b d88P                       \n\
-                                                                    "Y88P"                        ');
-  console.log("+==========================================================================================+");
 
 
   process.on('uncaughtException', e => console.error(e.stack || e));
 
 
   // load all commands from the 'commands' directory
-  battleroyale.commands.loadFromDirectory(`${__dirname}/commands`, (f, ...a) => require(f)(...a));
+  airplanebattle.commands.loadFromDirectory(`${__dirname}/commands`, (f, ...a) => require(f)(...a));
   // load all event files from the 'events' directory
-  battleroyale.utils.loadFilesFromDirectory(`${__dirname}/events`);
+  airplanebattle.utils.loadFilesFromDirectory(`${__dirname}/events`);
 
-  battleroyale.timeManager.start();
+  airplanebattle.timeManager.start();
 
   setInterval(function() {
-    jcmp.events.Call("battleroyale_updates");
+    jcmp.events.Call("airplanebattle_updates");
   }, 1000) //every second call this event
   setInterval(function() {
-    jcmp.events.Call("battleroyale_player_outarea");
+    jcmp.events.Call("airplanebattle_player_outarea");
   }, 1000) //every second call this event
 
 }

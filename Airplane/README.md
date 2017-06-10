@@ -1,4 +1,4 @@
-# BattleRoyale Gamemode for Justcause3MP
+# Airplanebattle Gamemode for Justcause3MP
 
 ## Installation
 Copy the files into you're server/packages folder

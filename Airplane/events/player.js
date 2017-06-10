@@ -6,12 +6,12 @@ const util = require('../gm/utility');
 jcmp.events.Add("PlayerCreated", player => {
     player.escapedNametagName = player.name.replace(/</g, '&lt;').replace(/>/g, '&gt;').substring(0, 40);;
     console.log(`${player.escapedNametagName} has joined.`);
-    battleroyale.chat.broadcast(`** ${player.escapedNametagName} has joined.`, battleroyale.config.colours.connection);
+    airplanebattle.chat.broadcast(`** ${player.escapedNametagName} has joined.`, airplanebattle.config.colours.connection);
 
-    const colour = battleroyale.colours.randomColor();
-    player.battleroyale = {
+    const colour = airplanebattle.colours.randomColor();
+    player.airplanebattle = {
         colour: colour,
-        colour_rgb: battleroyale.utils.hexToRGB(colour),
+        colour_rgb: airplanebattle.utils.hexToRGB(colour),
         kills: 0,
         deaths: 0,
         outside: 60, // time before you die if you go out of the area
@@ -31,42 +31,42 @@ jcmp.events.Add("PlayerCreated", player => {
 
 jcmp.events.Add("PlayerDestroyed", player => {
     console.log(`${player.escapedNametagName} has left.`);
-    battleroyale.chat.broadcast(`** ${player.escapedNametagName} has left.`, battleroyale.config.colours.connection);
+    airplanebattle.chat.broadcast(`** ${player.escapedNametagName} has left.`, airplanebattle.config.colours.connection);
 
     if (typeof player.spawnedVehicle !== 'undefined') {
         player.spawnedVehicle.Destroy();
     }
 
-    if(player.battleroyale.ingame) {// if the player is ingame
+    if(player.airplanebattle.ingame) {// if the player is ingame
 
-      jcmp.events.Call('battleroyale_player_leave_game', player, true);
+      jcmp.events.Call('airplanebattle_player_leave_game', player, true);
     } else {
-      battleroyale.game.players.onlobby.removePlayer(player);
+      airplanebattle.game.players.onlobby.removePlayer(player);
     }
 
-jcmp.events.CallRemote("battleroyale_player_destroyed", null, player.networkId);
+jcmp.events.CallRemote("airplanebattle_player_destroyed", null, player.networkId);
 
 });
 
 
 function randomSpawn(baseVec, radius) {
     const half = radius / 2;
-    return new Vector3f(baseVec.x + battleroyale.utils.random(-half, half), baseVec.y, baseVec.z + battleroyale.utils.random(-half, half));
+    return new Vector3f(baseVec.x + airplanebattle.utils.random(-half, half), baseVec.y, baseVec.z + airplanebattle.utils.random(-half, half));
 }
 jcmp.events.Add("PlayerReady", (player) => {
     player.escapedNametagName = player.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     //player.respawnPosition = randomSpawn(util.randomArray(spawnLocations), 900);
-    player.respawnPosition = randomSpawn(battleroyale.config.game.lobbypos, battleroyale.config.game.lobbyRadius / 2);
-    jcmp.events.CallRemote('battleroyale_set_weather', player, battleroyale.config.world.weather);
-    battleroyale.timeManager.updatePlayer(player);
+    player.respawnPosition = randomSpawn(airplanebattle.config.game.lobbypos, airplanebattle.config.game.lobbyRadius / 2);
+    jcmp.events.CallRemote('airplanebattle_set_weather', player, airplanebattle.config.world.weather);
+    airplanebattle.timeManager.updatePlayer(player);
     player.Respawn();
-    player.battleroyale.ready = true;
-    battleroyale.game.players.onlobby.push(player); // add the player to the lobby array
+    player.airplanebattle.ready = true;
+    airplanebattle.game.players.onlobby.push(player); // add the player to the lobby array
     console.log("Player added to lobby list");
-    console.log(" * " + battleroyale.game.players.onlobby.length + " on lobby waiting");
-    if (battleroyale.bans.has(player.client.steamId)) {
-        battleroyale.chat.send(player, 'You are banned from the server until the next server restart. You will get kicked shortly.', battleroyale.config.colours.red);
-            const done = battleroyale.workarounds.watchPlayer(player, setTimeout(() => {
+    console.log(" * " + airplanebattle.game.players.onlobby.length + " on lobby waiting");
+    if (airplanebattle.bans.has(player.client.steamId)) {
+        airplanebattle.chat.send(player, 'You are banned from the server until the next server restart. You will get kicked shortly.', airplanebattle.config.colours.red);
+            const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
             done();
             player.Kick('banned');
         }, 15000));
@@ -74,31 +74,31 @@ jcmp.events.Add("PlayerReady", (player) => {
     const data = {
       id: player.networkId,
       name: player.escapedNametagName,
-      colour: player.battleroyale.colour,
-      isAdmin: battleroyale.utils.isAdmin(player)
+      colour: player.airplanebattle.colour,
+      isAdmin: airplanebattle.utils.isAdmin(player)
   };
 
 
-    console.log("Sending battleroyale_player_created");
+    console.log("Sending airplanebattle_player_created");
     console.log("Sending " + JSON.stringify(data));
-    jcmp.events.CallRemote("battleroyale_player_created", null, JSON.stringify(data));
-    jcmp.events.CallRemote("battleroyale_accueil_appear",player);
+    jcmp.events.CallRemote("airplanebattle_player_created", null, JSON.stringify(data));
+    jcmp.events.CallRemote("airplanebattle_accueil_appear",player);
 
 
 
 });
 
-jcmp.events.AddRemoteCallable("battleroyale_UI_ready", (player) => { // when UI is ready
-console.log("battleroyale_UI_ready" + player);
-  jcmp.events.CallRemote('battleroyale_UI_Hide',player);
-  battleroyale.chat.send(player, "Welcome to the Official BattleRoyale server created by Daranix and Myami .", battleroyale.config.colours.green);
-  //battleroyale.chat.send(player, "Player need before game start :" + battleroyale.game.players.onlobby.length + "/" + battleroyale.config.game.minPlayers, battleroyale.config.colours.red);
+jcmp.events.AddRemoteCallable("airplanebattle_UI_ready", (player) => { // when UI is ready
+console.log("airplanebattle_UI_ready" + player);
+  jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
+  airplanebattle.chat.send(player, "Welcome to the Official airplanebattle server created by Daranix and Myami .", airplanebattle.config.colours.green);
+  //airplanebattle.chat.send(player, "Player need before game start :" + airplanebattle.game.players.onlobby.length + "/" + airplanebattle.config.game.minPlayers, airplanebattle.config.colours.red);
 
   let dataneed = {
-    ingame:battleroyale.game.players.onlobby.length,
-    need:battleroyale.config.game.minPlayers
+    ingame:airplanebattle.game.players.onlobby.length,
+    need:airplanebattle.config.game.minPlayers
 };
-jcmp.events.CallRemote("battleroyale_playerneed_client",null,JSON.stringify(dataneed));
+jcmp.events.CallRemote("airplanebattle_playerneed_client",null,JSON.stringify(dataneed));
 const data = {
         players: jcmp.players.map(p => ({
             id: p.networkId,
@@ -111,23 +111,23 @@ const data = {
         }))
     };
 
-    jcmp.events.CallRemote("battleroyale_init", player, JSON.stringify(data));
+    jcmp.events.CallRemote("airplanebattle_init", player, JSON.stringify(data));
 
 });
 
 jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
 
-  player.battleroyale.ready = false;
-  player.battleroyale.deaths ++;
+  player.airplanebattle.ready = false;
+  player.airplanebattle.deaths ++;
   let killer_data;
   let death_message = '';
   if (typeof killer !== 'undefined' && killer !== null) {
     if (killer.networkId === player.networkId) {
       death_message = 'killed themselves';
-      jcmp.events.CallRemote("battleroyale_deathui_show", player);
+      jcmp.events.CallRemote("airplanebattle_deathui_show", player);
     } else {
       if (typeof killer.escapedNametagName !== 'undefined') {
-        killer.battleroyale.kills++;
+        killer.airplanebattle.kills++;
 
         killer_data = {
           networkId: killer.networkId,
@@ -135,17 +135,17 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
           deaths: killer.freeroam.deaths
         };
 
-        jcmp.events.CallRemote("battleroyale_deathui_show", player);
+        jcmp.events.CallRemote("airplanebattle_deathui_show", player);
       } else {
         death_message = 'was squashed';
-        jcmp.events.CallRemote("battleroyale_deathui_show", player);
+        jcmp.events.CallRemote("airplanebattle_deathui_show", player);
       }
     }
   } else {
     death_message = 'died';
-    jcmp.events.CallRemote("battleroyale_deathui_show", player);
+    jcmp.events.CallRemote("airplanebattle_deathui_show", player);
   }
-  jcmp.events.CallRemote("battleroyale_die_client_appear", null, player.escapedNametagName);
+  jcmp.events.CallRemote("airplanebattle_die_client_appear", null, player.escapedNametagName);
 
   const data = {
       player: {
@@ -155,58 +155,53 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
       },
       killer: killer_data,
     };
-    jcmp.events.CallRemote("battleroyale_player_death", null, JSON.stringify(data));
+    jcmp.events.CallRemote("airplanebattle_player_death", null, JSON.stringify(data));
 
 
-if (player.battleroyale.ingame){
-    battleroyale.chat.send(player, 'You will be respawned on the arena.', battleroyale.config.colours.purple);
+if (player.airplanebattle.ingame){
+    airplanebattle.chat.send(player, 'You will be respawned on the arena.', airplanebattle.config.colours.purple);
 
-    let randomspawn  = BRGame.playerSpawnPoints[battleroyale.utils.random(0, BRGame.playerSpawnPoints.length -1)]; // take a random spawn
-    const pos = new Vector3f (randomspawn.x,randomspawn.y,randomspawn.z);
-    const done = battleroyale.workarounds.watchPlayer(player, setTimeout(() => {
+    let randomspawn  = BRGame.playerSpawnPoints[airplanebattle.utils.random(0, BRGame.playerSpawnPoints.length -1)]; // take a random spawn
+    const pos = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
+    const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
       done();
       player.respawnPosition = pos;
       player.Respawn();
-      jcmp.events.CallRemote("battleroyale_deathui_hide", player);
+      jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
+    var vehicle = new Vehicle(448735752, p.position, p.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
+    vehicle.SetOccupant(0, p); //Assign the player to the driver seat
     let dataneed = {
-      ingame:battleroyale.game.players.onlobby.length,
-      need:battleroyale.config.game.minPlayers
+      ingame:airplanebattle.game.players.onlobby.length,
+      need:airplanebattle.config.game.minPlayers
   };
-  jcmp.events.CallRemote("battleroyale_playerneed_client",null,JSON.stringify(dataneed));
+  jcmp.events.CallRemote("airplanebattle_playerneed_client",null,JSON.stringify(dataneed));
 
 }
 
-battleroyale.chat.send(player, 'You will be respawned in the lobby.', battleroyale.config.colours.purple);
-const pos = battleroyale.config.game.lobbypos;
-const done = battleroyale.workarounds.watchPlayer(player, setTimeout(() => {
+airplanebattle.chat.send(player, 'You will be respawned in the lobby.', airplanebattle.config.colours.purple);
+const pos = airplanebattle.config.game.lobbypos;
+const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
 done();
 player.respawnPosition = pos;
 player.Respawn();
-jcmp.events.CallRemote("battleroyale_deathui_hide", player);
+jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
 }, 4000));
 
-jcmp.events.CallRemote("battleroyale_playerneed_client",null,JSON.stringify(dataneed));
+jcmp.events.CallRemote("airplanebattle_playerneed_client",null,JSON.stringify(dataneed));
 
 });
 
-jcmp.events.AddRemoteCallable("battleroyale_player_spawning", player => {
+jcmp.events.AddRemoteCallable("airplanebattle_player_spawning", player => {
     player.invulnerable = true;
 });
-jcmp.events.AddRemoteCallable("battleroyale_player_spawned", player => {
+jcmp.events.AddRemoteCallable("airplanebattle_player_spawned", player => {
     // if the player isn't in passive mode, let them know spawn protection ends..
 
-    battleroyale.chat.send(player, 'Your spawn protection will end in 5 seconds.', battleroyale.config.colours.purple);
+    airplanebattle.chat.send(player, 'Your spawn protection will end in 5 seconds.', airplanebattle.config.colours.purple);
 
-    const done = battleroyale.workarounds.watchPlayer(player, setTimeout(() => {
+    const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
         done();
         player.invulnerable = false;
     }, 5000));
-});
-
-
-jcmp.events.AddRemoteCallable("battleroyale_random_weapon", player => {
-    var randomweapon = battleroyale.config.weaponhash[battleroyale.utils.random(0, battleroyale.config.weaponhash.length - 1)];
-    player.GiveWeapon(parseInt(randomweapon), 500, true);
-
 });

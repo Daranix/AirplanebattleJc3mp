@@ -98,15 +98,15 @@ module.exports = class Utility {
     let timeStr = '';
 
     if (typeof hour !== 'undefined')
-      timeStr = battleroyale.utils.zeroPadding(hour, 2).toString();
+      timeStr = airplanebattle.utils.zeroPadding(hour, 2).toString();
 
     if (typeof minute !== 'undefined')
-      timeStr += ':' + battleroyale.utils.zeroPadding(minute, 2).toString();
+      timeStr += ':' + airplanebattle.utils.zeroPadding(minute, 2).toString();
     else
       timeStr += ':00';
 
     if (typeof second !== 'undefined')
-      timeStr += ':' + battleroyale.utils.zeroPadding(second, 2).toString();
+      timeStr += ':' + airplanebattle.utils.zeroPadding(second, 2).toString();
 
     return timeStr;
   }
@@ -195,22 +195,22 @@ module.exports = class Utility {
     * @param {Player} player - the player to check
     */
     static isAdmin(player) {
-        return (battleroyale.config.admins.indexOf(player.client.steamId) !== -1);
+        return (airplanebattle.config.admins.indexOf(player.client.steamId) !== -1);
     }
     static isNanos(player) {
-        return (battleroyale.config.nano.indexOf(player.client.steamId) !== -1);
+        return (airplanebattle.config.nano.indexOf(player.client.steamId) !== -1);
     }
 
     static randomSpawn(baseVec, radius) {
       const half = radius / 2;
-      return new Vector3f(baseVec.x + battleroyale.utils.random(-half, half),
+      return new Vector3f(baseVec.x + airplanebattle.utils.random(-half, half),
         baseVec.y,
-        baseVec.z + battleroyale.utils.random(-half, half));
+        baseVec.z + airplanebattle.utils.random(-half, half));
     }
 
     static broadcastToLobby(msg) {
-      for(let player of battleroyale.game.players.onlobby) {
-        battleroyale.chat.send(player, msg);
+      for(let player of airplanebattle.game.players.onlobby) {
+        airplanebattle.chat.send(player, msg);
       }
     }
 
@@ -231,8 +231,8 @@ module.exports = class Utility {
     }*/
 
     static IsPointInCircle(v1, v2, radius) {
-      //console.log(battleroyale.utils.GetDistanceBetweenPointsXY(v1, v2));
-      if(battleroyale.utils.GetDistanceBetweenPointsXY(v1, v2) <= radius) return true;
+      //console.log(airplanebattle.utils.GetDistanceBetweenPointsXY(v1, v2));
+      if(airplanebattle.utils.GetDistanceBetweenPointsXY(v1, v2) <= radius) return true;
       return false;
       /*var distsq = (v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y);
       return distsq <= radius * radius;*/
@@ -250,7 +250,7 @@ module.exports = class Utility {
     static GetDistanceBetweenPointsXY(v1, v2) {
       let v13f = new Vector3f(v1.x, v1.y, 0.0);
       let v14f = new Vector3f(v2.x, v2.y, 0.0);
-      return battleroyale.utils.GetDistanceBetweenPoints(v13f, v14f);
+      return airplanebattle.utils.GetDistanceBetweenPoints(v13f, v14f);
 
     }
 };

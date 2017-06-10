@@ -14,7 +14,7 @@ module.exports = class BRGame {
 
   broadcast(msg, color) {
     for(let player of this.players) {
-      battleroyale.chat.send(player, msg, color);
+      airplanebattle.chat.send(player, msg, color);
     }
   }
 

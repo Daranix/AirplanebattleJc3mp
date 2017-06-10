@@ -5,18 +5,18 @@ module.exports = class TimeManager {
     }
 
     start() {
-        this.hour = battleroyale.config.world.time.hour;
-        this.minute = battleroyale.config.world.time.minute;
+        this.hour = airplanebattle.config.world.time.hour;
+        this.minute = airplanebattle.config.world.time.minute;
 
         setInterval(this.syncTime, 1875, this);
     }
 
     /* NOTE: setInterval callback, don't use _this_ in here. */
     syncTime(timeManager) {
-        let min = battleroyale.utils.clamp(0, timeManager.minute++, 59);
+        let min = airplanebattle.utils.clamp(0, timeManager.minute++, 59);
         let hour = 0;
         if (min === 59) {
-            hour = battleroyale.utils.clamp(0, timeManager.hour++, 23);
+            hour = airplanebattle.utils.clamp(0, timeManager.hour++, 23);
             if (hour === 23)
                 timeManager.hour = 0;
 
@@ -32,12 +32,12 @@ module.exports = class TimeManager {
     }
 
     updatePlayer(player) {
-        if (typeof player.battleroyale !== 'undefined' && !player.battleroyale.custom_time_set) {
+        if (typeof player.airplanebattle !== 'undefined' && !player.airplanebattle.custom_time_set) {
             this.setTimeForPlayer(player, this.hour, this.minute);
         }
     }
 
     setTimeForPlayer(player, hour, minute) {
-        jcmp.events.CallRemote('battleroyale_set_time', player, hour, minute);
+        jcmp.events.CallRemote('airplanebattle_set_time', player, hour, minute);
     }
 }

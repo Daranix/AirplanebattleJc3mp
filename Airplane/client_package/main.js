@@ -1,6 +1,6 @@
 'use strict';
 // UI
-const ui = new WebUIWindow('battleroyale_ui', 'package://battleroyale/ui/index.html', new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
+const ui = new WebUIWindow('airplanebattle_ui', 'package://airplanebattle/ui/index.html', new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
 
 ui.autoResize = true;
 //Nametag
@@ -73,12 +73,12 @@ function IsPointInCircle(v1, v2, radius) {
       jcmp.ui.CallEvent('outarea_toggle', toggle);
   });
 
-  jcmp.events.AddRemoteCallable('battleroyale_player_created', function(data) {
+  jcmp.events.AddRemoteCallable('airplanebattle_player_created', function(data) {
     data = JSON.parse(data);
     const playerCache = createCache(data.id, data.name, data.colour);
     playerCache.isAdmin = data.isAdmin;
     playersCache[data.id] = playerCache;
-    jcmp.ui.CallEvent('battleroyale_scoreboard_addplayer', JSON.stringify({
+    jcmp.ui.CallEvent('airplanebattle_scoreboard_addplayer', JSON.stringify({
         id: data.id,
         name: data.name,
         colour: data.colour,
@@ -90,7 +90,7 @@ function IsPointInCircle(v1, v2, radius) {
 
   });
 
-  jcmp.events.AddRemoteCallable('battleroyale_Brgame_client', function(data,id) {
+  jcmp.events.AddRemoteCallable('airplanebattle_Brgame_client', function(data,id) {
     let datapoiserver = [];
     datapoiserver = JSON.parse(data);
     for (let i = 0; i < datapoiserver.length; i++) {
@@ -106,29 +106,29 @@ function IsPointInCircle(v1, v2, radius) {
     }
   });
 
-  jcmp.events.AddRemoteCallable('battleroyale_POI_Delete', function(data) {
+  jcmp.events.AddRemoteCallable('airplanebattle_POI_Delete', function(data) {
       pois.forEach(poi => {
       poi.Destroy();
       })
       pois = [];
     });
 
-    jcmp.events.AddRemoteCallable('battleroyale_playeringame_true', function() {
+    jcmp.events.AddRemoteCallable('airplanebattle_playeringame_true', function() {
       playeringame = true ;
     });
 
-    jcmp.events.AddRemoteCallable('battleroyale_playeringame_false', function() {
+    jcmp.events.AddRemoteCallable('airplanebattle_playeringame_false', function() {
       playeringame = false ;
     });
 
 
-function battleroyale_check_poi(){
+function airplanebattle_check_poi(){
     if (playeringame){
     pois.forEach(poi => {
     if (poi.weapongive){
            if(IsPointInCircle(jcmp.localPlayer.position, poi.position, 10)) // 10 is the distance of the radius aroud each object
            {
-               jcmp.events.CallRemote('battleroyale_random_weapon');
+               jcmp.events.CallRemote('airplanebattle_random_weapon');
                poi.Destroy();
                poi.weapongive = false;
             }
@@ -137,7 +137,7 @@ function battleroyale_check_poi(){
   }
 };
 
-  jcmp.events.AddRemoteCallable('battleroyale_distance_player_center_server', function(center) {
+  jcmp.events.AddRemoteCallable('airplanebattle_distance_player_center_server', function(center) {
     //calcul distance between player and center of the area
 
     let c = JSON.parse(center);
@@ -145,51 +145,51 @@ function battleroyale_check_poi(){
 
 });
 
-  jcmp.events.Add('battleroyale_distance_player_center', function() {
+  jcmp.events.Add('airplanebattle_distance_player_center', function() {
     //calcul distance between player and center of the area
       if (playeringame){
-        jcmp.ui.CallEvent('battleroyale_distance_update',GetDistanceBetweenPointsXY(jcmp.localPlayer.position,centerc));
+        jcmp.ui.CallEvent('airplanebattle_distance_update',GetDistanceBetweenPointsXY(jcmp.localPlayer.position,centerc));
           }
         });
 
-  jcmp.events.AddRemoteCallable('battleroyale_radius_client', function(radiusclient) {
+  jcmp.events.AddRemoteCallable('airplanebattle_radius_client', function(radiusclient) {
         //send to the client the radius of the battle
         let radius = 0;
         radius = radiusclient;
-        jcmp.ui.CallEvent('battleroyale_radius_update',radius);
+        jcmp.ui.CallEvent('airplanebattle_radius_update',radius);
       });
 
-    jcmp.events.AddRemoteCallable('battleroyale_outarea_timer_client', function(timer) {
+    jcmp.events.AddRemoteCallable('airplanebattle_outarea_timer_client', function(timer) {
         let times = 60;
         times = timer;
-        jcmp.ui.CallEvent('battleroyale_outarea_timer_html',times);
+        jcmp.ui.CallEvent('airplanebattle_outarea_timer_html',times);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_UI_Show', function() {
+      jcmp.events.AddRemoteCallable('airplanebattle_UI_Show', function() {
         jcmp.ui.CallEvent('limitareavisible',true);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_UI_Hide', function() {
+      jcmp.events.AddRemoteCallable('airplanebattle_UI_Hide', function() {
         jcmp.ui.CallEvent('limitareavisible',false);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_deathui_show', () => {
-        jcmp.ui.CallEvent('battleroyale_deathui_toggle', true);
+      jcmp.events.AddRemoteCallable('airplanebattle_deathui_show', () => {
+        jcmp.ui.CallEvent('airplanebattle_deathui_toggle', true);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_deathui_hide', () => {
-        jcmp.ui.CallEvent('battleroyale_deathui_toggle', false);
+      jcmp.events.AddRemoteCallable('airplanebattle_deathui_hide', () => {
+        jcmp.ui.CallEvent('airplanebattle_deathui_toggle', false);
       });
 
       jcmp.events.Add('GameTeleportInitiated', () => {
-        jcmp.events.CallRemote('battleroyale_player_spawning');
+        jcmp.events.CallRemote('airplanebattle_player_spawning');
       });
 
       jcmp.events.Add('GameTeleportCompleted', () => {
-        jcmp.events.CallRemote('battleroyale_player_spawned');
+        jcmp.events.CallRemote('airplanebattle_player_spawned');
       });
 
-      jcmp.ui.AddEvent('battleroyale_ready', (data) => {
+      jcmp.ui.AddEvent('airplanebattle_ready', (data) => {
         data = JSON.parse(data);
 
             data.players.forEach(p => {
@@ -199,7 +199,7 @@ function battleroyale_check_poi(){
                 playerCache.flags.passiveMode = p.passiveMode;
                 playerCache.flags.isAdmin = p.isAdmin;
 
-                jcmp.ui.CallEvent('battleroyale_scoreboard_addplayer', JSON.stringify({
+                jcmp.ui.CallEvent('airplanebattle_scoreboard_addplayer', JSON.stringify({
                     id: p.id,
                     name: p.name,
                     colour: p.colour,
@@ -210,70 +210,70 @@ function battleroyale_check_poi(){
                 }));
             });
 
-        jcmp.events.CallRemote('battleroyale_UI_ready');
+        jcmp.events.CallRemote('airplanebattle_UI_ready');
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_set_time', (hour, minute) => {
+      jcmp.events.AddRemoteCallable('airplanebattle_set_time', (hour, minute) => {
         jcmp.world.SetTime(hour, minute, 0);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_set_weather', weather => {
+      jcmp.events.AddRemoteCallable('airplanebattle_set_weather', weather => {
         jcmp.world.weather = weather;
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_player_destroyed', (networkId) => {
-        jcmp.ui.CallEvent('battleroyale_scoreboard_removeplayer', networkId);
+      jcmp.events.AddRemoteCallable('airplanebattle_player_destroyed', (networkId) => {
+        jcmp.ui.CallEvent('airplanebattle_scoreboard_removeplayer', networkId);
         if (playersCache[networkId] !== null)
         delete playersCache[networkId];
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_die_client_appear', (kill) => {
-        jcmp.ui.CallEvent('battleroyale_die_update', kill);
-        jcmp.ui.CallEvent('battleroyale_die_list', true);
+      jcmp.events.AddRemoteCallable('airplanebattle_die_client_appear', (kill) => {
+        jcmp.ui.CallEvent('airplanebattle_die_update', kill);
+        jcmp.ui.CallEvent('airplanebattle_die_list', true);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_die_client_remove', () => {
-        jcmp.ui.CallEvent('battleroyale_die_list', false);
+      jcmp.events.AddRemoteCallable('airplanebattle_die_client_remove', () => {
+        jcmp.ui.CallEvent('airplanebattle_die_list', false);
       });
 
-      jcmp.events.AddRemoteCallable('battleroyale_playerneed_client', (data) => {
+      jcmp.events.AddRemoteCallable('airplanebattle_playerneed_client', (data) => {
         let playersneed = 0;
         let c = JSON.parse(data);
         playersneed = c.need - c.ingame ;
-        jcmp.ui.CallEvent('battleroyale_playerneed_launch', playersneed);
+        jcmp.ui.CallEvent('airplanebattle_playerneed_launch', playersneed);
       });
 
 
-jcmp.events.AddRemoteCallable('battleroyale_area_reduced_client_true', () => {
-  jcmp.ui.CallEvent('battleroyale_area_reduced', true);
+jcmp.events.AddRemoteCallable('airplanebattle_area_reduced_client_true', () => {
+  jcmp.ui.CallEvent('airplanebattle_area_reduced', true);
 });
-jcmp.events.AddRemoteCallable('battleroyale_area_reduced_client_false', () => {
-  jcmp.ui.CallEvent('battleroyale_area_reduced', false);
-});
-
-jcmp.events.AddRemoteCallable('battleroyale_winner_client_true', () => {
-  jcmp.ui.CallEvent('battleroyale_winner_toggle', true);
-});
-jcmp.events.AddRemoteCallable('battleroyale_winner_client_false', () => {
-  jcmp.ui.CallEvent('battleroyale_winner_toggle', false);
-});
-jcmp.events.AddRemoteCallable('battleroyale_winner_client_name', (playername) => {
-  jcmp.ui.CallEvent('battleroyale_win_playername', playername);
+jcmp.events.AddRemoteCallable('airplanebattle_area_reduced_client_false', () => {
+  jcmp.ui.CallEvent('airplanebattle_area_reduced', false);
 });
 
-jcmp.events.AddRemoteCallable('battleroyale_winner_client_true_all', () => {
-  jcmp.ui.CallEvent('battleroyale_winner_toggleforall', true);
+jcmp.events.AddRemoteCallable('airplanebattle_winner_client_true', () => {
+  jcmp.ui.CallEvent('airplanebattle_winner_toggle', true);
 });
-jcmp.events.AddRemoteCallable('battleroyale_winner_client_false_all', () => {
-  jcmp.ui.CallEvent('battleroyale_winner_toggleforall', false);
+jcmp.events.AddRemoteCallable('airplanebattle_winner_client_false', () => {
+  jcmp.ui.CallEvent('airplanebattle_winner_toggle', false);
+});
+jcmp.events.AddRemoteCallable('airplanebattle_winner_client_name', (playername) => {
+  jcmp.ui.CallEvent('airplanebattle_win_playername', playername);
 });
 
-jcmp.events.AddRemoteCallable('battleroyale_player_death', (data) => {
+jcmp.events.AddRemoteCallable('airplanebattle_winner_client_true_all', () => {
+  jcmp.ui.CallEvent('airplanebattle_winner_toggleforall', true);
+});
+jcmp.events.AddRemoteCallable('airplanebattle_winner_client_false_all', () => {
+  jcmp.ui.CallEvent('airplanebattle_winner_toggleforall', false);
+});
+
+jcmp.events.AddRemoteCallable('airplanebattle_player_death', (data) => {
     data = JSON.parse(data);
 
     let cache = playersCache[data.player.networkId];
     if (typeof cache !== 'undefined') {
-        jcmp.ui.CallEvent('battleroyale_scoreboard_updateplayer', data.player.networkId, data.player.kills, data.player.deaths);
+        jcmp.ui.CallEvent('airplanebattle_scoreboard_updateplayer', data.player.networkId, data.player.kills, data.player.deaths);
         cache.stats.kills = data.player.kills;
         cache.stats.deaths = data.player.deaths;
     }
@@ -281,7 +281,7 @@ jcmp.events.AddRemoteCallable('battleroyale_player_death', (data) => {
     if (typeof data.killer !== 'undefined') {
         cache = playersCache[data.killer.networkId];
         if (typeof cache !== 'undefined') {
-            jcmp.ui.CallEvent('battleroyale_scoreboard_updateplayer', data.killer.networkId, data.killer.kills, data.killer.deaths);
+            jcmp.ui.CallEvent('airplanebattle_scoreboard_updateplayer', data.killer.networkId, data.killer.kills, data.killer.deaths);
             cache.stats.kills = data.killer.kills;
             cache.stats.deaths = data.killer.deaths;
         }
@@ -295,7 +295,7 @@ jcmp.events.AddRemoteCallable('battleroyale_player_death', (data) => {
 // end of Basics
 
 //Admin icon start
-const admin_icon = new WebUIWindow('battleroyale_admin_icon', 'package://battleroyale/ui/icon.html', new Vector2(41, 42));
+const admin_icon = new WebUIWindow('airplanebattle_admin_icon', 'package://airplanebattle/ui/icon.html', new Vector2(41, 42));
 admin_icon.autoRenderTexture = false;
 
 
@@ -370,11 +370,11 @@ jcmp.events.Add('GameUpdateRender', (renderer) => {
       })
 
         if (myplayer != null ){
-            jcmp.ui.CallEvent('battleroyale_healthbar_update', (myplayer.health / myplayer.maxHealth));
+            jcmp.ui.CallEvent('airplanebattle_healthbar_update', (myplayer.health / myplayer.maxHealth));
         } else {
            myplayer = jcmp.players.find(p => p.networkId == jcmp.localPlayer.networkId);
         }
 
-        jcmp.events.Call('battleroyale_distance_player_center');
-        battleroyale_check_poi();
+        jcmp.events.Call('airplanebattle_distance_player_center');
+        airplanebattle_check_poi();
     });
