@@ -103,16 +103,15 @@ const data = {
         players: jcmp.players.map(p => ({
             id: p.networkId,
             name: p.escapedNametagName,
-            colour: p.freeroam.colour,
-            kills: p.freeroam.kills,
-            deaths: p.freeroam.deaths,
-            passiveMode: p.freeroam.passiveMode,
-            isAdmin: freeroam.utils.isAdmin(p)
+            colour: p.airplanebattle.colour,
+            kills: p.airplanebattle.kills,
+            deaths: p.airplanebattle.deaths,
+            passiveMode: p.airplanebattle.passiveMode,
+            isAdmin: airplanebattle.utils.isAdmin(p)
         }))
     };
 
     jcmp.events.CallRemote("airplanebattle_init", player, JSON.stringify(data));
-
 });
 
 jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
@@ -131,9 +130,12 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
 
         killer_data = {
           networkId: killer.networkId,
-          kills: killer.freeroam.kills,
-          deaths: killer.freeroam.deaths
+          kills: killer.airplanebattle.kills,
+          deaths: killer.airplanebattle.deaths
         };
+
+
+      jcmp.events.CallRemote("airplanebattle_kill", killer.airplanebattle.kills);
 
         jcmp.events.CallRemote("airplanebattle_deathui_show", player);
       } else {
@@ -150,8 +152,8 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
   const data = {
       player: {
         networkId: player.networkId,
-        kills: player.freeroam.kills,
-        deaths: player.freeroam.deaths
+        kills: player.airplanebattle.kills,
+        deaths: player.airplanebattle.deaths
       },
       killer: killer_data,
     };

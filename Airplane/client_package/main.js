@@ -89,6 +89,9 @@ function IsPointInCircle(v1, v2, radius) {
     }));
 
   });
+  jcmp.ui.AddEvent('airplanebattle_toggle_cursor', (toggle) => {
+      jcmp.localPlayer.controlsEnabled = !toggle;
+  });
 
   jcmp.events.AddRemoteCallable('airplanebattle_Brgame_client', function(data,id) {
     let datapoiserver = [];
@@ -189,9 +192,8 @@ function airplanebattle_check_poi(){
         jcmp.events.CallRemote('airplanebattle_player_spawned');
       });
 
-      jcmp.ui.AddEvent('airplanebattle_ready', (data) => {
+      jcmp.events.AddRemoteCallable('airplanebattle_init', (data) => {
         data = JSON.parse(data);
-
             data.players.forEach(p => {
                 const playerCache = createCache(p.id, p.name, p.colour);
                 playerCache.stats.kills = p.kills;
@@ -210,8 +212,12 @@ function airplanebattle_check_poi(){
                 }));
             });
 
-        jcmp.events.CallRemote('airplanebattle_UI_ready');
+        jcmp.events.CallRemote('airplanebattle_initialised');
       });
+
+
+
+
 
       jcmp.events.AddRemoteCallable('airplanebattle_set_time', (hour, minute) => {
         jcmp.world.SetTime(hour, minute, 0);
@@ -249,6 +255,10 @@ jcmp.events.AddRemoteCallable('airplanebattle_area_reduced_client_true', () => {
 });
 jcmp.events.AddRemoteCallable('airplanebattle_area_reduced_client_false', () => {
   jcmp.ui.CallEvent('airplanebattle_area_reduced', false);
+});
+
+jcmp.events.AddRemoteCallable('airplanebattle_kill', (kill) => {
+  jcmp.ui.CallEvent('airplanebattle_kill_made', kill);
 });
 
 jcmp.events.AddRemoteCallable('airplanebattle_winner_client_true', () => {

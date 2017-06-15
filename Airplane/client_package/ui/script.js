@@ -7,12 +7,16 @@
             $spawnprot = $('#spawn');
             $scoreboard = $('#scoreboard'),
             $players_el = $('#scoreboard .players'),
+            $helpmessage = $('#helpmessage'),
+            $deathlist = $('#deathlist'),
             $players = [],
             $scoreboard_toggle_mouse_key = 79,
             $scoreboard_toggle_key = 80,
             $is_scoreboard_key_down = false,
             $is_scoreboard_mouse_down = false,
             $death_messages = [],
+            $chat_input_visible = false,
+            $deathlist_timeout = false;
 
 
             jcmp.AddEvent('airplanebattle_deathui_toggle', function(toggle) {
@@ -143,6 +147,9 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
             jcmp.AddEvent('airplanebattle_playerneed_launch',(numberplayerneed)=>{
                $("#intplayerneed").text(numberplayerneed);
              });
+             jcmp.AddEvent('airplanebattle_kill_made',(kill)=>{
+                $("#killyoumade").text(kill);
+              });
 
 
                      function addPlayer(player) {
@@ -285,16 +292,19 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
            $death_messages.splice($death_messages.indexOf(element), 1);
        }
 
+       jcmp.AddEvent('chat_input_state', function(b) {
+                   $chat_input_visible = b;
+               });
 
-               jcmp.AddEvent('freeroam_scoreboard_addplayer', function(data) {
+               jcmp.AddEvent('airplanebattle_scoreboard_addplayer', function(data) {
                    addPlayer($.parseJSON(data));
                });
 
-               jcmp.AddEvent('freeroam_scoreboard_updateplayer', function(networkId, kills, deaths) {
+               jcmp.AddEvent('airplanebattle_scoreboard_updateplayer', function(networkId, kills, deaths) {
                    updatePlayer(networkId, kills, deaths);
                });
 
-               jcmp.AddEvent('freeroam_scoreboard_removeplayer', function(networkId) {
+               jcmp.AddEvent('airplanebattle_scoreboard_removeplayer', function(networkId) {
                    destroyPlayer(networkId);
                });
 
@@ -309,7 +319,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                         if (event.which === $scoreboard_toggle_mouse_key && $is_scoreboard_key_down) {
                             $is_scoreboard_mouse_down = !$is_scoreboard_mouse_down;
                             $is_scoreboard_mouse_down ? jcmp.ShowCursor() : jcmp.HideCursor();
-                            jcmp.CallEvent('freeroam_toggle_cursor', $is_scoreboard_mouse_down);
+                            jcmp.CallEvent('airplanebattle_toggle_cursor', $is_scoreboard_mouse_down);
                             $scoreboard.toggleClass('scrollable', $is_scoreboard_mouse_down);
                         }
                     });
@@ -323,7 +333,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                             if ($is_scoreboard_mouse_down) {
                                 $is_scoreboard_mouse_down = false;
                                 jcmp.HideCursor();
-                                jcmp.CallEvent('freeroam_toggle_cursor', false);
+                                jcmp.CallEvent('airplanebattle_toggle_cursor', false);
                                 $scoreboard.toggleClass('scrollable', false);
                             }
                         }
@@ -333,6 +343,11 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                             $helpmessage.removeClass('visible');
                         }
                     });
+
+                    jcmp.AddEvent('airplanebattle_initialised', function() {
+                              $initialised = true;
+                          });
+
 
 
 

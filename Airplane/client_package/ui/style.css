@@ -1,3 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50px;
+}
+
+.row {
+    display: -webkit-flex;
+}
+
+.row .column {
+    -webkit-flex: 1;
+}
+
 
 #deathui {
     position: fixed;
@@ -282,4 +311,28 @@ div.betawarning{
 
 #scoreboard .players .row:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.55);
+}
+#helpmessage {
+    position: absolute;
+    bottom: 78px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    -webkit-transition: opacity 200ms linear;
+    -webkit-user-select: none;
+}
+
+#helpmessage.visible {
+    opacity: 1;
+}
+
+#helpmessage h1 {
+    font-size: 18px;
+    line-height: 26px;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#helpmessage h1 span {
+    color: #ffcc00;
 }
