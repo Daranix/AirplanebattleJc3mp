@@ -142,7 +142,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                    }
                });
 
-            jcmp.CallEvent('airplanebattle_ready'); // Ui Ready
+            jcmp.CallEvent('airplanebattle_UI_ready'); // Ui Ready
 
             jcmp.AddEvent('airplanebattle_playerneed_launch',(numberplayerneed)=>{
                $("#intplayerneed").text(numberplayerneed);
@@ -297,6 +297,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                });
 
                jcmp.AddEvent('airplanebattle_scoreboard_addplayer', function(data) {
+
                    addPlayer($.parseJSON(data));
                });
 
@@ -310,9 +311,15 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
 
                $window.keydown(function(event) {
                         // toggle scoreboard
+                        console.log($initialised);
+                        console.log(event.which);
+                        console.log($scoreboard_toggle_key);
+                        console.log($chat_input_visible);
+                        console.log($is_scoreboard_key_down);
                         if (event.which === $scoreboard_toggle_key && $initialised && !$chat_input_visible && !$is_scoreboard_key_down && !$deathui.hasClass('visible')) {
                             $scoreboard.addClass('visible');
                             $is_scoreboard_key_down = true;
+                            console.log("event append");
                         }
 
                         // toggle scoreboard cursor

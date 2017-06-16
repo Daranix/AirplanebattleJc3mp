@@ -67,8 +67,6 @@ function IsPointInCircle(v1, v2, radius) {
       if(GetDistanceBetweenPointsXY(v1, v2) <= radius) return true;
       return false;
     }
-
-
     jcmp.events.AddRemoteCallable('outarea_toggle',function(toggle) {
       jcmp.ui.CallEvent('outarea_toggle', toggle);
   });
@@ -212,7 +210,7 @@ function airplanebattle_check_poi(){
                 }));
             });
 
-        jcmp.events.CallRemote('airplanebattle_initialised');
+        jcmp.ui.CallEvent('airplanebattle_initialised');
       });
 
 
