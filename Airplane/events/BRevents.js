@@ -39,7 +39,7 @@
       }
 
     } catch(ex) {
-      console.log("Cant hold loop");
+      console.log("Cant hold loop lobby");
       console.log(ex);
     }
 
@@ -73,7 +73,7 @@
 
 
     } catch(ex) {
-      console.log("Can't handle loop");
+      console.log("Can't handle loop ingame");
       console.log(ex);
     }
 
@@ -119,6 +119,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     jcmp.events.CallRemote('airplanebattle_radius_client',p,radius); // send the radius
     jcmp.events.CallRemote('airplanebattle_playeringame_true',p);
     p.airplanebattle.game = BRGame;
+    console.log(p.airplanebattle.game);
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;
     p.health = 800;
@@ -126,11 +127,10 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
     p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
-    p.weapons.forEach(function(weapon){
-       p.RemoveWeapon(weapon.modelHash);
-     })
      var vehicle = new Vehicle(448735752, p.position, p.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
-     vehicle.SetOccupant(0, p); //Assign the player to the driver seat
+     setTimeout(function() {
+       vehicle.SetOccupant(0, p); //Assign the player to the driver seat
+     }, 1000)
   })
 
   BRGame.aliveStarted = BRGame.players.length;

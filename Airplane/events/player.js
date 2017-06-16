@@ -164,7 +164,7 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
 if (player.airplanebattle.ingame){
     airplanebattle.chat.send(player, 'You will be respawned on the arena.', airplanebattle.config.colours.purple);
 
-    let randomspawn  = BRGame.playerSpawnPoints[airplanebattle.utils.random(0, BRGame.playerSpawnPoints.length -1)]; // take a random spawn
+    let randomspawn  = player.airplanebattle.game.playerSpawnPoints[airplanebattle.utils.random(0, player.airplanebattle.game.playerSpawnPoints.length -1)]; // take a random spawn
     const pos = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
     const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
       done();
@@ -172,26 +172,23 @@ if (player.airplanebattle.ingame){
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
-    var vehicle = new Vehicle(448735752, p.position, p.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
-    vehicle.SetOccupant(0, p); //Assign the player to the driver seat
-    let dataneed = {
-      ingame:airplanebattle.game.players.onlobby.length,
-      need:airplanebattle.config.game.minPlayers
-  };
-  jcmp.events.CallRemote("airplanebattle_playerneed_client",null,JSON.stringify(dataneed));
+    var vehicle = new Vehicle(448735752, player.position, player.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
+    vehicle.SetOccupant(0, player); //Assign the player to the driver seat
+
 
 }
+else{
+  airplanebattle.chat.send(player, 'You will be respawned in the lobby.', airplanebattle.config.colours.purple);
+  const pos = airplanebattle.config.game.lobbypos;
+  const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
+  done();
+  player.respawnPosition = pos;
+  player.Respawn();
+  jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
+  }, 4000));
+}
 
-airplanebattle.chat.send(player, 'You will be respawned in the lobby.', airplanebattle.config.colours.purple);
-const pos = airplanebattle.config.game.lobbypos;
-const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
-done();
-player.respawnPosition = pos;
-player.Respawn();
-jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
-}, 4000));
 
-jcmp.events.CallRemote("airplanebattle_playerneed_client",null,JSON.stringify(dataneed));
 
 });
 
