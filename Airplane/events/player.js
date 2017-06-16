@@ -172,8 +172,8 @@ if (player.airplanebattle.ingame){
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
-    var vehicle = new Vehicle(448735752, player.position, player.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
-    vehicle.SetOccupant(0, player); //Assign the player to the driver seat
+    var vehicle = new Vehicle(448735752, player.position, player.rotation); 
+    vehicle.SetOccupant(0, player);
 
 
 }
