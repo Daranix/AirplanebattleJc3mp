@@ -30,6 +30,11 @@ function createCache(id, name, colour) {
         colour: colour,
         colour_rgb: hex2rgba(colour),
         isAdmin: false,
+        stats: {
+            kills: 0,
+            deaths: 0
+        },
+
         nametag: {
             textMetric: null,
             textPos: null,
@@ -192,16 +197,17 @@ function airplanebattle_check_poi(){
 
       jcmp.ui.AddEvent('airplanebattle_ready', () => {
        jcmp.events.CallRemote('airplanebattle_UI_ready');
+       jcmp.print("airplanebattle_UI_ready");
      });
 
       jcmp.events.AddRemoteCallable('airplanebattle_init', (data) => {
         data = JSON.parse(data);
             data.players.forEach(p => {
+              jcmp.print("player:" + p);
                 const playerCache = createCache(p.id, p.name, p.colour);
                 playerCache.stats.kills = p.kills;
                 playerCache.stats.deaths = p.deaths;
-                playerCache.flags.passiveMode = p.passiveMode;
-                playerCache.flags.isAdmin = p.isAdmin;
+                playerCache.isAdmin = p.isAdmin;
 
                 jcmp.ui.CallEvent('airplanebattle_scoreboard_addplayer', JSON.stringify({
                     id: p.id,

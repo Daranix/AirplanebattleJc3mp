@@ -106,12 +106,13 @@ const data = {
             colour: p.airplanebattle.colour,
             kills: p.airplanebattle.kills,
             deaths: p.airplanebattle.deaths,
-            passiveMode: p.airplanebattle.passiveMode,
             isAdmin: airplanebattle.utils.isAdmin(p)
         }))
     };
 
     jcmp.events.CallRemote("airplanebattle_init", player, JSON.stringify(data));
+    console.log("airplanebattle_init" + player);
+
 });
 
 jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
