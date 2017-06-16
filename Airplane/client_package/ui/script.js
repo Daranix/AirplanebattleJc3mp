@@ -142,7 +142,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                    }
                });
 
-            jcmp.CallEvent('airplanebattle_UI_ready'); // Ui Ready
+            jcmp.CallEvent('airplanebattle_ready'); // Ui Ready
 
             jcmp.AddEvent('airplanebattle_playerneed_launch',(numberplayerneed)=>{
                $("#intplayerneed").text(numberplayerneed);

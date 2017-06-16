@@ -190,6 +190,10 @@ function airplanebattle_check_poi(){
         jcmp.events.CallRemote('airplanebattle_player_spawned');
       });
 
+      jcmp.ui.AddEvent('airplanebattle_ready', () => {
+       jcmp.events.CallRemote('airplanebattle_UI_ready');
+     });
+
       jcmp.events.AddRemoteCallable('airplanebattle_init', (data) => {
         data = JSON.parse(data);
             data.players.forEach(p => {
