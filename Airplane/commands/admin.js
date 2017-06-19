@@ -64,6 +64,15 @@ module.exports = ({ Command, manager }) => {
     jcmp.events.Call('airplanebattle_start_battle');
     airplanebattle.chat.send(player, "Battle Start");
 
+  }))
+  .add(new Command('airplanespawn').description('Start a battle').handler(function(player) {
+
+    if(!airplanebattle.utils.isAdmin(player)) {
+      return airplanebattle.chat.send(player, "You're not allowed to use this command", airplanebattle.config.colours.red);
+    }
+    jcmp.events.Call('airplanebattle_player_vehicle',player);
+    airplanebattle.chat.send(player, "airplane spawn");
+
   }));
 
 

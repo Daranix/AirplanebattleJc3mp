@@ -173,7 +173,7 @@ if (player.airplanebattle.ingame){
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
     setTimeout(function() {
-      jcmp.events.Call('airplanebattle_player_vehicle');
+      jcmp.events.Call('airplanebattle_player_vehicle',player);
     }, 1000)
 }
 else{
