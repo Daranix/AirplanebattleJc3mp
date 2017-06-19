@@ -126,6 +126,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
   //  jcmp.events.Call('airplanebattle_player_vehicle',p);
      setTimeout(function() {
+       console.log("1" + JSON.stringify(p.position));
        jcmp.events.Call('airplanebattle_player_vehicle',p);
      }, 6000)
   })
