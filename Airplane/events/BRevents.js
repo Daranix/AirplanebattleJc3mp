@@ -102,9 +102,6 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
 
 
-  console.log("Center position X: " + airplanebattle.arena[listname].defaults.center.x + " Y: " + airplanebattle.arena[listname].defaults.center.y + " Z: " + airplanebattle.arena[listname].defaults.center.z);
-
-  console.log(airplanebattle.game.players.onlobby.length);
 
   var BRGame = new airplanebattle.BRGame(airplanebattle.game.gamesCount, centerposition, radius, spawnplayer, spawnwbarrel); // send everything into a class
   console.log("Creating new game with ID: " + airplanebattle.game.gamesCount + "Name of the arena: "+ areaname );
@@ -128,7 +125,6 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
     p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
   //  jcmp.events.Call('airplanebattle_player_vehicle',p);
-
      setTimeout(function() {
        jcmp.events.Call('airplanebattle_player_vehicle',p);
      }, 6000)
@@ -218,6 +214,7 @@ if (player.airplanebattle.warning){
 
 
  jcmp.events.Add('airplanebattle_player_vehicle', (player) => {
+   console.log("2" + player.position + player.rotation);
   var vehicle = new Vehicle(448735752, player.position, player.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
     vehicle.SetOccupant(0, player); //Assign the player to the driver seat
 });
