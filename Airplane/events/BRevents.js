@@ -108,6 +108,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
 
   var playersToTP = airplanebattle.game.players.onlobby; // save all the player into a new array
+
   airplanebattle.game.players.onlobby = []; // onlobby array make it clean
   playersToTP.forEach(function(p) {
     jcmp.events.CallRemote("airplanebattle_Brgame_client", p, JSON.stringify(BRGame.barrelSpawnPoints),BRGame.id); // send the weapon position to the client
@@ -116,17 +117,15 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     jcmp.events.CallRemote('airplanebattle_radius_client',p,radius); // send the radius
     jcmp.events.CallRemote('airplanebattle_playeringame_true',p);
     p.airplanebattle.game = BRGame;
-    console.log(p.airplanebattle.game);
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;
     p.health = 800;
     airplanebattle.game.players.ingame.push(p);
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
-    p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
-  //  jcmp.events.Call('airplanebattle_player_vehicle',p);
+    p.position = new Vector3f (randomspawn.x,randomspawn.y + 300,randomspawn.z);
+   //jcmp.events.Call('airplanebattle_player_vehicle',p);
      setTimeout(function() {
-       console.log("1" + JSON.stringify(p.position));
        jcmp.events.Call('airplanebattle_player_vehicle',p);
      }, 6000)
   })
@@ -215,7 +214,6 @@ if (player.airplanebattle.warning){
 
 
  jcmp.events.Add('airplanebattle_player_vehicle', (player) => {
-   console.log("2" + player.position + player.rotation);
-  var vehicle = new Vehicle(448735752, player.position, player.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
-    vehicle.SetOccupant(0, player); //Assign the player to the driver seat
+  var vehicle = new Vehicle(448735752, player.aimPosition, player.rotation);
+  vehicle.SetOccupant(0, player);
 });
