@@ -172,10 +172,9 @@ if (player.airplanebattle.ingame){
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
-    var vehicle = new Vehicle(448735752, player.position, player.rotation); 
-    vehicle.SetOccupant(0, player);
-
-
+    setTimeout(function() {
+      jcmp.events.Call('airplanebattle_player_vehicle');
+    }, 1000)
 }
 else{
   airplanebattle.chat.send(player, 'You will be respawned in the lobby.', airplanebattle.config.colours.purple);

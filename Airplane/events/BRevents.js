@@ -127,10 +127,11 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
     p.position = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
-     var vehicle = new Vehicle(448735752, p.position, p.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
+  //  jcmp.events.Call('airplanebattle_player_vehicle',p);
+
      setTimeout(function() {
-       vehicle.SetOccupant(0, p); //Assign the player to the driver seat
-     }, 1000)
+       jcmp.events.Call('airplanebattle_player_vehicle',p);
+     }, 6000)
   })
 
   BRGame.aliveStarted = BRGame.players.length;
@@ -213,4 +214,10 @@ if (player.airplanebattle.warning){
 }
 
 })
+});
+
+
+ jcmp.events.Add('airplanebattle_player_vehicle', (player) => {
+  var vehicle = new Vehicle(448735752, player.position, player.rotation); //Spawn the vehicle at the players position  CARMEN ALBATROSS REBEL
+    vehicle.SetOccupant(0, player); //Assign the player to the driver seat
 });
