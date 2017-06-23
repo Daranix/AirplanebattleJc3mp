@@ -19,7 +19,7 @@ global.airplanebattle = {
       StartTimer: null,
       TimerArea : 2,
       games: [],
-      gamesCount: 0,
+      gamesCount: 1,
       battleduration: 5
     },
     arena:{

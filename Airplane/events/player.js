@@ -22,7 +22,8 @@ jcmp.events.Add("PlayerCreated", player => {
         warningmessage: false,
         exp: 0,
         ready: false,
-        game: false
+        game: false,
+        airplanecontrol:false
     };
 
 
@@ -116,7 +117,7 @@ const data = {
 });
 
 jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
-
+  player.airplanebattle.airplanecontrol = false;
   player.airplanebattle.ready = false;
   player.airplanebattle.deaths ++;
   let killer_data;
@@ -165,15 +166,24 @@ if (player.airplanebattle.ingame){
     airplanebattle.chat.send(player, 'You will be respawned on the arena.', airplanebattle.config.colours.purple);
 
     let randomspawn  = player.airplanebattle.game.playerSpawnPoints[airplanebattle.utils.random(0, player.airplanebattle.game.playerSpawnPoints.length -1)]; // take a random spawn
-    const pos = new Vector3f (randomspawn.x,randomspawn.y + 700,randomspawn.z);
+    const pos = new Vector3f (randomspawn.x,randomspawn.y + 500,randomspawn.z);
     const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
       done();
       player.respawnPosition = pos;
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
-    setTimeout(function() {
-      jcmp.events.Call('airplanebattle_player_vehicle',player);
+    player.dimension = player.airplanebattle.game.id;
+    var vehicle = new Vehicle(448735752, player.position, player.rotation);
+    vehicle.dimension = player.airplanebattle.game.id;
+    vehicle.SetOccupant(0, player);
+    var airplanecontrolinterval =  setInterval(function() {
+      if (!player.airplanebattle.airplanecontrol){
+        vehicle.position = player.position
+      }
+      else {
+        clearInterval(airplanecontrolinterval);
+      }
     }, 1000)
 }
 else{
@@ -203,4 +213,8 @@ jcmp.events.AddRemoteCallable("airplanebattle_player_spawned", player => {
         done();
         player.invulnerable = false;
     }, 5000));
+});
+
+jcmp.events.Add('PlayerVehicleEntered', (player, vehicle, seatIndex) => {
+  player.airplanebattle.airplanecontrol = true;
 });

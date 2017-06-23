@@ -116,6 +116,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     p.airplanebattle.game = BRGame;
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;
+    console.log("foreach loop" + BRGame.id + p.dimension);
     airplanebattle.game.players.ingame.push(p);
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
@@ -124,10 +125,17 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
   for (let i = 0; i < playersToTP.length; i++){
     const player = playersToTP[i];
-      var vehicle = new Vehicle(448735752, player.position, player.rotation);
-      vehicle.dimension = BRGame.id;
-      vehicle.SetOccupant(0, player);
-
+    var vehicle = new Vehicle(448735752, player.position, player.rotation);
+    vehicle.dimension = BRGame.id;
+    vehicle.SetOccupant(0, player);
+    var airplanecontrolinterval =  setInterval(function() {
+      if (!player.airplanebattle.airplanecontrol){
+        vehicle.position = player.position
+      }
+      else {
+        clearInterval(airplanecontrolinterval);
+      }
+    }, 1000)
   }
 
   BRGame.aliveStarted = BRGame.players.length;
@@ -240,8 +248,7 @@ jcmp.events.Add("airplanebattle_player_leave_game", function(player, destroy) {
 });
 
  jcmp.events.Add('airplanebattle_player_vehicle', (player) => {
-     var vehicle = new Vehicle(448735752, player.aimPosition, player.rotation);
-     vehicle.SetOccupant(0, player);
+
 
 
 });
