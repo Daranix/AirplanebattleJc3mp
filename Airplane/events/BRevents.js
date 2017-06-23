@@ -110,7 +110,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
   var playersToTP = airplanebattle.game.players.onlobby; // save all the player into a new array
 
   airplanebattle.game.players.onlobby = []; // onlobby array make it clean
-  playersToTP.forEach(function(p) {
+  playersToTP.forEach((p) => {
     jcmp.events.CallRemote("airplanebattle_Brgame_client", p, JSON.stringify(BRGame.barrelSpawnPoints),BRGame.id); // send the weapon position to the client
     jcmp.events.CallRemote('airplanebattle_UI_Show',p);
     jcmp.events.CallRemote("airplanebattle_distance_player_center_server", p, JSON.stringify(centerposition)); // send the center position to the client
@@ -119,16 +119,19 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     p.airplanebattle.game = BRGame;
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;
-    p.health = 800;
     airplanebattle.game.players.ingame.push(p);
     BRGame.players.push(p);
     let randomspawn  = spawnplayer[airplanebattle.utils.random(0, spawnplayer.length -1)]; // take a random spawn
     p.position = new Vector3f (randomspawn.x,randomspawn.y + 300,randomspawn.z);
-   //jcmp.events.Call('airplanebattle_player_vehicle',p);
-     setTimeout(function() {
-       jcmp.events.Call('airplanebattle_player_vehicle',p);
-     }, 6000)
   })
+
+  for (let i = 0; i < playersToTP.length; i++){
+    const player = playersToTP[i];
+    var vehicle = new Vehicle(448735752, player.position, player.rotation);
+    vehicle.SetOccupant(0, player);
+    console.log("everything spawn");
+
+  }
 
   BRGame.aliveStarted = BRGame.players.length;
 
@@ -212,8 +215,38 @@ if (player.airplanebattle.warning){
 })
 });
 
+jcmp.events.Add("airplanebattle_player_leave_game", function(player, destroy) {
+
+  // Broadcast msg to all players on that game with the current players left
+  // Delete player from game the BRGame object
+
+  player.airplanebattle.game.players.removePlayer(player);
+  player.airplanebattle.ready = false;
+  player.airplanebattle.ingame = false;
+  jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
+  jcmp.events.CallRemote('outarea_toggle', player, false);
+  jcmp.events.CallRemote('airplanebattle_playeringame_false',player);
+  jcmp.events.CallRemote('airplanebattle_POI_Delete',player);
+  airplanebattle.game.players.ingame.removePlayer(player);
+  player.dimension = 0;
+  if(player.airplanebattle.game.players.length <= 1) { // if he whas the last guys ingame
+    // End the battle
+    console.log("Ending battle " + player.airplanebattle.game.id);
+    jcmp.events.Call('airplane_end_battle', player.airplanebattle.game);
+  }
+
+  console.log("Removing player from game array players");
+
+  console.log("Players in array: " + player.airplanebattle.game.players.length);
+  if(!destroy) {
+    airplanebattle.game.players.onlobby.push(player);
+  }
+
+});
 
  jcmp.events.Add('airplanebattle_player_vehicle', (player) => {
-  var vehicle = new Vehicle(448735752, player.aimPosition, player.rotation);
-  vehicle.SetOccupant(0, player);
+     var vehicle = new Vehicle(448735752, player.aimPosition, player.rotation);
+     vehicle.SetOccupant(0, player);
+
+
 });
