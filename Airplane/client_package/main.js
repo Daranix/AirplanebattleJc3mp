@@ -96,28 +96,8 @@ function IsPointInCircle(v1, v2, radius) {
       jcmp.localPlayer.controlsEnabled = !toggle;
   });
 
-  jcmp.events.AddRemoteCallable('airplanebattle_Brgame_client', function(data,id) {
-    let datapoiserver = [];
-    datapoiserver = JSON.parse(data);
-    for (let i = 0; i < datapoiserver.length; i++) {
-    var  bposition = datapoiserver[i];
-    const poi = new POI(10,new Vector3f(bposition.x,bposition.y,bposition.z));
-    poi.minDistance = 10.0;
-    poi.maxDistance = 100000.0;
-    poi.clampedToScreen = false;
-    poi.text = "Weapon";
-    poi.weapongive = true;
-    poi.dimension = id;//BRGame.id
-    pois[bposition.id] = poi;
-    }
-  });
 
-  jcmp.events.AddRemoteCallable('airplanebattle_POI_Delete', function(data) {
-      pois.forEach(poi => {
-      poi.Destroy();
-      })
-      pois = [];
-    });
+
 
     jcmp.events.AddRemoteCallable('airplanebattle_playeringame_true', function() {
       playeringame = true ;
@@ -126,22 +106,6 @@ function IsPointInCircle(v1, v2, radius) {
     jcmp.events.AddRemoteCallable('airplanebattle_playeringame_false', function() {
       playeringame = false ;
     });
-
-
-function airplanebattle_check_poi(){
-    if (playeringame){
-    pois.forEach(poi => {
-    if (poi.weapongive){
-           if(IsPointInCircle(jcmp.localPlayer.position, poi.position, 10)) // 10 is the distance of the radius aroud each object
-           {
-               jcmp.events.CallRemote('airplanebattle_random_weapon');
-               poi.Destroy();
-               poi.weapongive = false;
-            }
-        }
-    })
-  }
-};
 
   jcmp.events.AddRemoteCallable('airplanebattle_distance_player_center_server', function(center) {
     //calcul distance between player and center of the area

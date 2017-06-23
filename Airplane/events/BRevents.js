@@ -95,7 +95,6 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
   var listname = airplanebattle.config.arenalist[airplanebattle.utils.random(0,airplanebattle.config.arenalist.length -1)];
   var areaname = airplanebattle.arena[listname].defaults.name;
   var spawnplayer = airplanebattle.arena[listname].playerSpawnPoints; // take all the player spawn
-  var spawnwbarrel = airplanebattle.arena[listname].barrelSpawnPoints; //all the weapon spawn
   var radius = airplanebattle.arena[listname].defaults.radius; // the default radius of the arena
   var centerposition = airplanebattle.arena[listname].defaults.center;
 
@@ -103,7 +102,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
 
 
-  var BRGame = new airplanebattle.BRGame(airplanebattle.game.gamesCount, centerposition, radius, spawnplayer, spawnwbarrel); // send everything into a class
+  var BRGame = new airplanebattle.BRGame(airplanebattle.game.gamesCount, centerposition, radius, spawnplayer ); // send everything into a class
   console.log("Creating new game with ID: " + airplanebattle.game.gamesCount + "Name of the arena: "+ areaname );
 
 
@@ -111,7 +110,6 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
   airplanebattle.game.players.onlobby = []; // onlobby array make it clean
   playersToTP.forEach((p) => {
-    jcmp.events.CallRemote("airplanebattle_Brgame_client", p, JSON.stringify(BRGame.barrelSpawnPoints),BRGame.id); // send the weapon position to the client
     jcmp.events.CallRemote('airplanebattle_UI_Show',p);
     jcmp.events.CallRemote("airplanebattle_distance_player_center_server", p, JSON.stringify(centerposition)); // send the center position to the client
     jcmp.events.CallRemote('airplanebattle_radius_client',p,radius); // send the radius
@@ -167,7 +165,6 @@ for(var i=0; i < BRGame.players.length; i++){
     jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
     jcmp.events.CallRemote('outarea_toggle', player, false);
     jcmp.events.CallRemote('airplanebattle_playeringame_false',player);
-    jcmp.events.CallRemote('airplanebattle_POI_Delete',player);
 
     // Winner
   //  airplanebattle.utils.broadcastToLobby(player + " was the winner of a battle");
@@ -226,7 +223,6 @@ jcmp.events.Add("airplanebattle_player_leave_game", function(player, destroy) {
   jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
   jcmp.events.CallRemote('outarea_toggle', player, false);
   jcmp.events.CallRemote('airplanebattle_playeringame_false',player);
-  jcmp.events.CallRemote('airplanebattle_POI_Delete',player);
   airplanebattle.game.players.ingame.removePlayer(player);
   player.dimension = 0;
   if(player.airplanebattle.game.players.length <= 1) { // if he whas the last guys ingame
