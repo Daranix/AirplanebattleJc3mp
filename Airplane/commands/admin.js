@@ -66,8 +66,9 @@ module.exports = ({ Command, manager }) => {
 
   }))
   .add(new Command('airplanespawn').description('spawn a airplane').handler(function(player) {
-    jcmp.events.Call('airplanebattle_player_vehicle',player);
-    airplanebattle.chat.send(player, "airplane spawn");
+    var vehicle = new Vehicle(448735752, player.position, player.rotation);
+    vehicle.SetOccupant(0, player);
+     airplanebattle.chat.send(player, "airplane spawn");
   }));
 
 
