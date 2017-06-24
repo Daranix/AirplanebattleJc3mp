@@ -116,6 +116,9 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     p.airplanebattle.game = BRGame;
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;
+    setTimeout(function() {
+    console.log("foreachtimeout" + p.dimension)
+  }, 500)
     console.log("foreach loop" + BRGame.id + p.dimension);
     airplanebattle.game.players.ingame.push(p);
     BRGame.players.push(p);
@@ -127,6 +130,10 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     const player = playersToTP[i];
     var vehicle = new Vehicle(448735752, player.position, player.rotation);
     vehicle.dimension = BRGame.id;
+    setTimeout(function() {
+    console.log("vehicletimeout" + vehicle.dimension)
+  }, 500)
+    console.log("vehicle" + vehicle.dimension);
     vehicle.SetOccupant(0, player);
     var airplanecontrolinterval =  setInterval(function() {
       if (!player.airplanebattle.airplanecontrol){

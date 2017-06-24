@@ -174,9 +174,17 @@ if (player.airplanebattle.ingame){
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
     player.dimension = player.airplanebattle.game.id;
+    setTimeout(function() {
+    console.log("dimensionplyertimeout" + player.dimension)
+  }, 500)
+    console.log("dimensionplayer" + player.airplanebattle.game.id + player.dimension);
     var vehicle = new Vehicle(448735752, player.position, player.rotation);
     vehicle.dimension = player.airplanebattle.game.id;
     vehicle.SetOccupant(0, player);
+    setTimeout(function() {
+    console.log("vehicletimeout" + vehicle.dimension)
+  }, 500)
+    console.log("vehicle" + vehicle.dimension);
     var airplanecontrolinterval =  setInterval(function() {
       if (!player.airplanebattle.airplanecontrol){
         vehicle.position = player.position
