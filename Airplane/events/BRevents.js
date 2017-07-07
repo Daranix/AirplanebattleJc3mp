@@ -129,12 +129,9 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
   for (let i = 0; i < playersToTP.length; i++){
     const player = playersToTP[i];
     var vehicle = new Vehicle(448735752, player.position, player.rotation);
-    vehicle.dimension = BRGame.id;
-    setTimeout(function() {
-    console.log("vehicletimeout" + vehicle.dimension)
-  }, 500)
-    console.log("vehicle" + vehicle.dimension);
+    vehicle.dimension = player.airplanebattle.game.id;
     vehicle.SetOccupant(0, player);
+    player.airplanebattle.vehiclesave.vehicle = vehicle;
     var airplanecontrolinterval =  setInterval(function() {
       if (!player.airplanebattle.airplanecontrol){
         vehicle.position = player.position
@@ -164,6 +161,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
 jcmp.events.Add('airplanebattle_end_battle', function(BRGame) // need to rewrite
 {
+  /*
 let highscore = 0;
 let highplayerscorename;
 for(var i=0; i < BRGame.players.length; i++){
@@ -174,24 +172,37 @@ for(var i=0; i < BRGame.players.length; i++){
     }
 }
 
-  console.log("Winner is : " + highplayerscorename + " with a score of : " + highscore )
-  BRGame.players.forEach(function(player){
-    jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
-    jcmp.events.CallRemote('outarea_toggle', player, false);
-    jcmp.events.CallRemote('airplanebattle_playeringame_false',player);
+  console.log("Winner is : " + highplayerscorename + " with a score of : " + highscore )*/
 
-    // Winner
-  //  airplanebattle.utils.broadcastToLobby(player + " was the winner of a battle");
-    jcmp.events.CallRemote('airplanebattle_winner_client_name',null,highplayerscorename);
+  console.log('Battle end left players ' + BRGame.players.length);
+if(BRGame.players.length >= 2) {
+  // if they are 2 guys stay ( for team battle)
+
+} else if(BRGame.players.length < 1) {
+  console.log("No winner :(")
+} else if (BRGame.players.length == 1) {
+  //console.log(BRGame.players);
+  var player = BRGame.players[0];
+  jcmp.events.CallRemote('airplanebattle_UI_Hide',player);
+  jcmp.events.CallRemote('outarea_toggle', player, false);
+  jcmp.events.CallRemote('airplanebattle_playeringame_false',player);
+  jcmp.events.CallRemote('airplanebattle_POI_Delete',player);
+
+  // Winner
+//  airplanebattle.utils.broadcastToLobby(player + " was the winner of a battle");
+  jcmp.events.CallRemote('airplanebattle_winner_client_name',null,player.escapedNametagName);
 
 
-  //  airplanebattle.chat.send(player, "You won a battle");
-    jcmp.events.CallRemote('airplanebattle_winner_client_true',player);
-    jcmp.events.CallRemote('airplanebattle_winner_client_true_all',null);
-    setTimeout(() => {
-      jcmp.events.CallRemote("airplanebattle_winner_client_false", player);
-      jcmp.events.CallRemote('airplanebattle_winner_client_false_all',null);
-    }, 10000);
+//  airplanebattle.chat.send(player, "You won a battle");
+  jcmp.events.CallRemote('airplanebattle_winner_client_true',player);
+  jcmp.events.CallRemote('airplanebattle_winner_client_true_all',null);
+
+
+  setTimeout(() => {
+    jcmp.events.CallRemote("airplanebattle_winner_client_false", player);
+    jcmp.events.CallRemote('airplanebattle_winner_client_false_all',null);
+  }, 10000);
+
 
 
     // Delete interval
@@ -201,8 +212,8 @@ for(var i=0; i < BRGame.players.length; i++){
     player.airplanebattle.game = undefined;
     player.airplanebattle.ingame = false;
     airplanebattle.game.players.onlobby.push(player);
-   })
-
+  }
+    airplanebattle.game.games.remove(BRGame);
 });
 
 jcmp.events.Add('airplanebattle_player_outarea', function() {

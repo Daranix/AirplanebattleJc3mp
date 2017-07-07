@@ -23,7 +23,10 @@ jcmp.events.Add("PlayerCreated", player => {
         exp: 0,
         ready: false,
         game: false,
-        airplanecontrol:false
+        airplanecontrol:false,
+        vehiclesave:{
+
+        }
     };
 
 
@@ -163,9 +166,12 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
 
 
 if (player.airplanebattle.ingame){
-    airplanebattle.chat.send(player, 'You will be respawned on the arena.', airplanebattle.config.colours.purple);
 
-    let randomspawn  = player.airplanebattle.game.playerSpawnPoints[airplanebattle.utils.random(0, player.airplanebattle.game.playerSpawnPoints.length -1)]; // take a random spawn
+//  jcmp.events.Call('airplanebattle_player_leave_game', player);
+
+   airplanebattle.chat.send(player, 'You will be respawned on the arena.', airplanebattle.config.colours.purple);
+
+   let randomspawn  = player.airplanebattle.game.playerSpawnPoints[airplanebattle.utils.random(0, player.airplanebattle.game.playerSpawnPoints.length -1)]; // take a random spawn
     const pos = new Vector3f (randomspawn.x,randomspawn.y + 500,randomspawn.z);
     const done = airplanebattle.workarounds.watchPlayer(player, setTimeout(() => {
       done();
@@ -173,26 +179,22 @@ if (player.airplanebattle.ingame){
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
     }, 4000));
-    player.dimension = player.airplanebattle.game.id;
+
+    var vehicledeath = new Vehicle(448735752, player.position, player.rotation);
+    vehicledeath.dimension = player.dimension;
+    vehicledeath.SetOccupant(0, player);
     setTimeout(function() {
-    console.log("dimensionplyertimeout" + player.dimension)
-  }, 500)
-    console.log("dimensionplayer" + player.airplanebattle.game.id + player.dimension);
-    var vehicle = new Vehicle(448735752, player.position, player.rotation);
-    vehicle.dimension = player.airplanebattle.game.id;
-    vehicle.SetOccupant(0, player);
-    setTimeout(function() {
-    console.log("vehicletimeout" + vehicle.dimension)
-  }, 500)
-    console.log("vehicle" + vehicle.dimension);
-    var airplanecontrolinterval =  setInterval(function() {
-      if (!player.airplanebattle.airplanecontrol){
-        vehicle.position = player.position
-      }
-      else {
-        clearInterval(airplanecontrolinterval);
-      }
-    }, 1000)
+      console.log("vehicle dimension " + vehicledeath.dimension + "player dimension" + player.dimension);
+      var airplanecontrolinterval =  setInterval(function() {
+        if (!player.airplanebattle.airplanecontrol){
+          vehicledeath.position = player.position
+        }
+        else {
+          clearInterval(airplanecontrolinterval);
+        }
+      }, 1000)
+  }, 1000)
+
 }
 else{
   airplanebattle.chat.send(player, 'You will be respawned in the lobby.', airplanebattle.config.colours.purple);

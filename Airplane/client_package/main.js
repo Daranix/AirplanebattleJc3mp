@@ -320,15 +320,8 @@ function RenderNametag(renderer, playerCache, distance,player) {
 function dist(start, end) {
     return end.sub(start).length;
 }
-let myplayer = null;
-/* same as myplayer
-let networkplayerid ;
-for (let i = 0; i < jcmp.players.length; i++) {
-  if (jcmp.localPlayer.networkId == jcmp.player[i].networkId){
-    networkplayerid = jcmp.players[i];
-  }
-}
-*/
+
+
 let cachedPlayer = null;
 jcmp.events.Add('GameUpdateRender', (renderer) => {
     const cam = jcmp.localPlayer.camera.position;
@@ -351,12 +344,6 @@ jcmp.events.Add('GameUpdateRender', (renderer) => {
          }
       })
 
-        if (myplayer != null ){
-            jcmp.ui.CallEvent('airplanebattle_healthbar_update', (myplayer.health / myplayer.maxHealth));
-        } else {
-           myplayer = jcmp.players.find(p => p.networkId == jcmp.localPlayer.networkId);
-        }
 
-        jcmp.events.Call('airplanebattle_distance_player_center');
-        airplanebattle_check_poi();
+
     });
