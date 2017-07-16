@@ -124,34 +124,24 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
   player.airplanebattle.ready = false;
   player.airplanebattle.deaths ++;
   let killer_data;
-  let death_message = '';
   if (typeof killer !== 'undefined' && killer !== null) {
-    if (killer.networkId === player.networkId) {
-      death_message = 'killed themselves';
       jcmp.events.CallRemote("airplanebattle_deathui_show", player);
     } else {
-      if (typeof killer.escapedNametagName !== 'undefined') {
+      if (killer && typeof killer.escapedNametagName !== 'undefined') {
         killer.airplanebattle.kills++;
-
         killer_data = {
           networkId: killer.networkId,
           kills: killer.airplanebattle.kills,
           deaths: killer.airplanebattle.deaths
         };
-
-
       jcmp.events.CallRemote("airplanebattle_kill", killer.airplanebattle.kills);
-
         jcmp.events.CallRemote("airplanebattle_deathui_show", player);
       } else {
-        death_message = 'was squashed';
+
         jcmp.events.CallRemote("airplanebattle_deathui_show", player);
       }
     }
-  } else {
-    death_message = 'died';
-    jcmp.events.CallRemote("airplanebattle_deathui_show", player);
-  }
+
   jcmp.events.CallRemote("airplanebattle_die_client_appear", null, player.escapedNametagName);
 
   const data = {
@@ -163,8 +153,6 @@ jcmp.events.Add("PlayerDeath", (player, killer, reason,BRGame) => {
       killer: killer_data,
     };
     jcmp.events.CallRemote("airplanebattle_player_death", null, JSON.stringify(data));
-
-
 if (player.airplanebattle.ingame){
 
 //  jcmp.events.Call('airplanebattle_player_leave_game', player);
@@ -178,22 +166,14 @@ if (player.airplanebattle.ingame){
       player.respawnPosition = pos;
       player.Respawn();
       jcmp.events.CallRemote("airplanebattle_deathui_hide", player);
+      player.respawnPosition = player.position;
+      player.Respawn();
+      const v = new Vehicle(448735752, player.position, player.rotation);
+      v.dimension = player.dimension;
+      v.SetOccupant(0, player);
     }, 4000));
 
-    var vehicledeath = new Vehicle(448735752, player.position, player.rotation);
-    vehicledeath.dimension = player.dimension;
-    vehicledeath.SetOccupant(0, player);
-    setTimeout(function() {
-      console.log("vehicle dimension " + vehicledeath.dimension + "player dimension" + player.dimension);
-      var airplanecontrolinterval =  setInterval(function() {
-        if (!player.airplanebattle.airplanecontrol){
-          vehicledeath.position = player.position
-        }
-        else {
-          clearInterval(airplanecontrolinterval);
-        }
-      }, 1000)
-  }, 1000)
+
 
 }
 else{
@@ -210,6 +190,7 @@ else{
 
 
 });
+
 
 jcmp.events.AddRemoteCallable("airplanebattle_player_spawning", player => {
     player.invulnerable = true;
