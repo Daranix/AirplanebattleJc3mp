@@ -1,0 +1,7 @@
+{
+    "authors": "Daranix,Myami",
+    "jcmp_dependencies": ["airplanebattle"],
+    "license":"MIT",
+    "name": "airplanebattle_nametags",
+    "version":"1.0.0"
+}
