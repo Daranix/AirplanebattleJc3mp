@@ -18,15 +18,7 @@ jcmp.events.Add('GameTeleportInitiated', function() {
     jcmp.ui.CallEvent('airplanebattle_loadscreen_toggle', true);
 })
 
-// HEALTHBAR ---
 
-var healthBarUI = new WebUIWindow("airplanebattle Healthbar", "package://airplanebattle/ui/healthbar.html", new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
-healthBarUI.autoResize = true;
-healthBarUI.captureMouseInput = false;
-
-jcmp.events.AddRemoteCallable('airplanebattle_healthbar_update', function(data) {
-    jcmp.ui.CallEvent('airplanebattle_healthbar_update', data);
-});
 
 // ------------------ INFO TEXT --------------------- //
 
@@ -172,7 +164,7 @@ function CreateNewBorderMatrix()
 
 jcmp.events.Add("GameUpdateRender", function(renderer) {
 
-  
+
 
 
     if(!lplayer.ingame) {
