@@ -60,19 +60,6 @@ body {
   display: none;
 }
 
-#radiusdiv{
-  position: fixed;
-  top: 7%;
-  left:80%;
-  font-size: 25px;
-  font-family: 'Orbitron', sans-serif;
-  background-color: rgba(133,133,133,0.6);
-  color: rgba(255, 255, 255, 0.8);
-  text-shadow: 0 0 1px #fff;
-  border-radius: 3px;
-  display: none;
-
-}
 #peopledielist{
   position: fixed;
   top: 29%;
@@ -134,19 +121,7 @@ div.betawarning{
   font-family: 'Bungee', cursive;
 }
 
- #areadiv{
-   position: fixed;
-   top: 3%;
-   left:81%;
-   font-size: 25px;
-   font-family: 'Orbitron', sans-serif;
-   background-color: rgba(133,133,133,0.6);
-   color: rgba(255, 255, 255, 0.8);
-   border-radius: 3px;
-   text-shadow: 0 0 1px #fff;
-   display: none;
 
- }
  #timerdiv{
    position: fixed;
    top:35%;

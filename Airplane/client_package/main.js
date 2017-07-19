@@ -4,6 +4,8 @@ const ui = new WebUIWindow('airplanebattle_ui', 'package://airplanebattle/ui/ind
 
 ui.autoResize = true;
 //Nametag
+
+ // TODO: Render texture to make appear the limit , better timer appear for out of the area , loading screen , leaderboard only show people on you're dimension
 const up = new Vector3f(0, 1, 0);
 const scaleFactor = new Vector3f(0.0001, 0.0001, 0.0001);
 const minScale = new Vector3f(0.001, 0.001, 0.001);
@@ -115,19 +117,7 @@ function IsPointInCircle(v1, v2, radius) {
 
 });
 
-  jcmp.events.Add('airplanebattle_distance_player_center', function() {
-    //calcul distance between player and center of the area
-      if (playeringame){
-        jcmp.ui.CallEvent('airplanebattle_distance_update',GetDistanceBetweenPointsXY(jcmp.localPlayer.position,centerc));
-          }
-        });
 
-  jcmp.events.AddRemoteCallable('airplanebattle_radius_client', function(radiusclient) {
-        //send to the client the radius of the battle
-        let radius = 0;
-        radius = radiusclient;
-        jcmp.ui.CallEvent('airplanebattle_radius_update',radius);
-      });
 
     jcmp.events.AddRemoteCallable('airplanebattle_outarea_timer_client', function(timer) {
         let times = 60;

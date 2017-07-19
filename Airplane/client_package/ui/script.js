@@ -74,14 +74,12 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
 
             jcmp.AddEvent('limitareavisible', (screen_visible) => {
                 if(screen_visible) {
-                    $('#radiusdiv').show();
-                    $('#areadiv').show();
+
                     $('#numberplayercontainer').show();
                     $('#peoplebeforelanunch').hide();
 
                 } else {
-                    $('#radiusdiv').hide();
-                    $('#areadiv').hide();
+            
                     $('#numberplayercontainer').hide();
                     $('#peoplebeforelanunch').show();
                 }
@@ -92,14 +90,6 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
             });
 
 
-            jcmp.AddEvent('airplanebattle_distance_update',(distance)=>{
-               $("#radiusdistance").text(parseInt(distance));
-             });
-
-
-             jcmp.AddEvent('airplanebattle_radius_update',(distance)=>{
-                $("#areadistance").text(distance);
-              });
               Array.prototype.remove = function(val) {
                 var index = this.indexOf(val);
                 if(index >= 0) this.splice(index, 1);
@@ -128,13 +118,7 @@ jcmp.AddEvent('airplanebattle_win_playername',(playername)=>{
                    }
                });
 
-               jcmp.AddEvent('airplanebattle_area_reduced', (screen_visible) => {
-                   if(screen_visible) {
-                       $('#reducearea').show();
-                   } else {
-                       $('#reducearea').hide();
-                   }
-               });
+
 
             jcmp.CallEvent('airplanebattle_ready'); // Ui Ready
 
