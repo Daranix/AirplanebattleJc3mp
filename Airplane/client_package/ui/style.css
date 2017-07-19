@@ -93,7 +93,7 @@ body {
 
 #winner{
   position: fixed;
-  top: 6%;
+  top: 10%;
   left:36%;
   font-size: 50px;
   font-family: 'Bungee', cursive;
@@ -104,7 +104,7 @@ body {
 
 #isthewinner{
   position: fixed;
-  top: 15%;
+  top: 20%;
   left:36%;
   font-size: 50px;
   font-family: 'Bungee', cursive;
@@ -115,7 +115,7 @@ body {
 
 div.betawarning{
   position: fixed;
-  bottom: 2%;
+  bottom: 1%;
   right: 46%;
   font-size:15px;
   font-family: 'Bungee', cursive;
@@ -124,13 +124,12 @@ div.betawarning{
 
  #timerdiv{
    position: fixed;
-   top:35%;
-   left: 40%;
-   font-size: 30px;
+   top:70%;
+   left: 90%;
+   font-size: 13px;
    color: red;
    font-family: 'Bungee', cursive;
    display: none;
-
  }
 
  #area{

@@ -104,7 +104,11 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
 
   var BRGame = new airplanebattle.BRGame(airplanebattle.game.gamesCount, centerposition, radius, spawnplayer ); // send everything into a class
   console.log("Creating new game with ID: " + airplanebattle.game.gamesCount + "Name of the arena: "+ areaname );
-
+  let gameData = {
+    center: { x: centerposition.x, y: centerposition.y, z: centerposition.z },
+    diameter: radius,
+    maxY: radius
+  };
 
   var playersToTP = airplanebattle.game.players.onlobby; // save all the player into a new array
   airplanebattle.game.players.onlobby = []; // onlobby array make it clean
@@ -113,6 +117,7 @@ jcmp.events.Add('airplanebattle_start_battle', function() {
     jcmp.events.CallRemote("airplanebattle_distance_player_center_server", p, JSON.stringify(centerposition)); // send the center position to the client
     jcmp.events.CallRemote('airplanebattle_radius_client',p,radius); // send the radius
     jcmp.events.CallRemote('airplanebattle_playeringame_true',p);
+    jcmp.events.CallRemote('airplanebattle_client_gameStart',p,JSON.stringify(gameData))
     p.airplanebattle.game = BRGame;
     p.airplanebattle.ingame = true;
     p.dimension = BRGame.id;

@@ -5,7 +5,10 @@ const ui = new WebUIWindow('airplanebattle_ui', 'package://airplanebattle/ui/ind
 ui.autoResize = true;
 //Nametag
 
- // TODO: Render texture to make appear the limit , better timer appear for out of the area , loading screen , leaderboard only show people on you're dimension
+var loadScreenUI = new WebUIWindow("AirplaneBattle LoadScreen", "package://airplanebattle/ui/loadscreen.html", new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
+loadScreenUI.autoResize = true;
+loadScreenUI.captureMouseInput = false;
+
 const up = new Vector3f(0, 1, 0);
 const scaleFactor = new Vector3f(0.0001, 0.0001, 0.0001);
 const minScale = new Vector3f(0.001, 0.001, 0.001);
@@ -18,8 +21,7 @@ const black = new RGBA(0, 0, 0, 255);
 const red = new RGBA(255, 0, 0, 255);
 const darkred = new RGBA(40, 0, 0, 255);
 const playersCache = [];
-//POI
-let pois = [];
+
 // player
 let playeringame = false;
 let centerc = new Vector3f(0, 0, 0);
@@ -143,10 +145,12 @@ function IsPointInCircle(v1, v2, radius) {
 
       jcmp.events.Add('GameTeleportInitiated', () => {
         jcmp.events.CallRemote('airplanebattle_player_spawning');
+        jcmp.ui.CallEvent('airplanebattle_loadscreen_toggle', true);
       });
 
       jcmp.events.Add('GameTeleportCompleted', () => {
         jcmp.events.CallRemote('airplanebattle_player_spawned');
+         jcmp.ui.CallEvent('airplanebattle_loadscreen_toggle', false);
       });
 
       jcmp.ui.AddEvent('airplanebattle_ready', () => {
@@ -335,7 +339,7 @@ jcmp.events.AddRemoteCallable('airplanebattle_client_gameStart', function(data) 
 
     data = JSON.parse(data);
 
-    maxY = data.maxY;
+    maxY = data.radius;
     center = new Vector3f(data.center.x, data.center.y, data.center.z);
     diameter = new Vector2f(data.diameter, data.diameter);
     m = CreateNewBorderMatrix();
