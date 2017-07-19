@@ -1,7 +1,8 @@
 console.log(" ---------------- Nametags loaded");
 
 jcmp.events.Add('PlayerCreated', function(player) {
-
+  
+  setTimeout(function () {
     var dsend = {
         id: player.networkId,
         name: player.escapedNametagName,
@@ -9,6 +10,8 @@ jcmp.events.Add('PlayerCreated', function(player) {
     };
 
     jcmp.events.CallRemote('airplanebattle_player_created', null, JSON.stringify(dsend));
+  }, 200);
+
 })
 
 jcmp.events.Add('PlayerDestroyed', function(player) {

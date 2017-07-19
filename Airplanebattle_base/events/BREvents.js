@@ -64,12 +64,7 @@ jcmp.events.Add('airplanebattle_updates', function () {
             //console.log("Player on game");
             //console.log(player);
 
-            // Update health bar
-            // TODO: What is this fucking shit i write lol
-            jcmp.events.CallRemote('airplanebattle_healthbar_update', player, JSON.stringify({
-                health: player.health,
-                maxHealth: 800
-            }));
+
 
             if (player.airplanebattle.ingame) {
                 // This check if the player is in the area of the game for all the players on the game
@@ -194,7 +189,7 @@ jcmp.events.Add('airplanebattle_end_battle', function (BRGame) {
         let needPlayers = airplanebattle.config.game.minPlayers - airplanebattle.game.players.onlobby.length;
         jcmp.events.CallRemote('airplanebattle_txt_needPlayers', player, needPlayers);
     }
-      }
+
 
 
     clearInterval(BRGame.closeArea);

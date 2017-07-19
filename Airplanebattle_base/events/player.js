@@ -40,7 +40,7 @@ jcmp.events.Add('PlayerDestroyed', function(player) {
 
 jcmp.events.Add('PlayerReady', function(player) {
 
-    airplanebattle.game.players.onlobby.push(player); // to remove if we used the gamemodechoicepackage
+    airplanebattle.game.players.onlobby.push(player);
     player.respawnPosition = airplanebattle.utils.randomSpawn(airplanebattle.config.game.lobby.pos, airplanebattle.config.game.lobby.radius / 2);
     player.Respawn();
 

@@ -13,8 +13,7 @@ module.exports = {
         battle_StartRadius: 2000,
         minPlayers: 10,
         timeToStart: 120000, // Start time of the battle when reach the min players on miliseconds
-        airplanes: false // TODO: Battles with airplanes ^^
     }
 
-    
+
 }
