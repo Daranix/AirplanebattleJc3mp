@@ -5,7 +5,7 @@ const ui = new WebUIWindow('airplanebattle_ui', 'package://airplanebattle/ui/ind
 ui.autoResize = true;
 //Nametag
 
-var loadScreenUI = new WebUIWindow("AirplaneBattle LoadScreen", "package://airplanebattle/ui/loadscreen.html", new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
+var loadScreenUI = new WebUIWindow("airplanebattle LoadScreen", "package://airplanebattle/ui/loadscreen.html", new Vector2(jcmp.viewportSize.x, jcmp.viewportSize.y));
 loadScreenUI.autoResize = true;
 loadScreenUI.captureMouseInput = false;
 
@@ -111,13 +111,7 @@ function IsPointInCircle(v1, v2, radius) {
       playeringame = false ;
     });
 
-  jcmp.events.AddRemoteCallable('airplanebattle_distance_player_center_server', function(center) {
-    //calcul distance between player and center of the area
 
-    let c = JSON.parse(center);
-    centerc = new Vector3f(c.x, c.y, c.z);
-
-});
 
 
 
