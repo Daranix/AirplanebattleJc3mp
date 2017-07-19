@@ -311,7 +311,64 @@ function dist(start, end) {
     return end.sub(start).length;
 }
 
+const border = new WebUIWindow("airplanebattle - border area texture", "package://airplanebattle/ui/border.html", new Vector2(1000, 1000));
+border.autoRenderTexture = false;
+border.autoResize = false;
+border.captureMouseInput = false;
+border.hidden = true;
 
+var lplayer = {
+    ingame: false
+};
+
+let center = new Vector3f(0,0,0);
+let m = CreateNewBorderMatrix();
+let delta = 0;
+let diameter = new Vector2f(0,0);
+let shrink_border = false;
+let shrink_size = 0;
+let maxY = 0;
+
+jcmp.events.AddRemoteCallable('airplanebattle_client_gameStart', function(data) {
+
+
+
+    data = JSON.parse(data);
+
+    maxY = data.maxY;
+    center = new Vector3f(data.center.x, data.center.y, data.center.z);
+    diameter = new Vector2f(data.diameter, data.diameter);
+    m = CreateNewBorderMatrix();
+
+    // DIAMETER = AREA SIZE
+
+    lplayer.ingame = true;
+
+
+
+});
+
+
+jcmp.events.AddRemoteCallable('airplanebattle_render_setColor', function(color) {
+    jcmp.ui.CallEvent('airplanebattle_render_setColor', color);
+});
+
+jcmp.events.AddRemoteCallable('airplanebattle_client_gameEnd', function() {
+    lplayer.ingame = false;
+});
+
+
+function RenderCircle(renderer, texture, translation, size)
+{
+    renderer.DrawTexture(texture, translation, size);
+}
+
+function CreateNewBorderMatrix()
+{
+    let m2 = new Matrix().Translate(center);
+    m2 = m2.Rotate(Math.PI / 2, new Vector3f(1, 0, 0));
+    return m2;
+}
 let cachedPlayer = null;
 jcmp.events.Add('GameUpdateRender', (renderer) => {
     const cam = jcmp.localPlayer.camera.position;
@@ -333,6 +390,35 @@ jcmp.events.Add('GameUpdateRender', (renderer) => {
          RenderNametag(renderer, playerCache, d);
          }
       })
+
+
+
+    if(!lplayer.ingame) {
+        return;
+    }
+
+    renderer.SetTransform(m);
+    const max_circles = 10;
+    const max_delta = maxY;
+    for (let i = 1; i <= max_circles; i++)
+    {
+        let d = delta + (max_delta / max_circles) * i;
+        if (d > max_delta)
+        {
+            d -= max_delta;
+        }
+        RenderCircle(renderer, border.texture, new Vector3f(-diameter.x / 2, -diameter.x / 2, d), diameter);
+    }
+    delta += 1 / 2;
+    if (delta > max_delta)
+    {
+        delta = 0;
+    }
+    if (shrink_border)
+    {
+        let new_size = (diameter.x > shrink_size) ? diameter.x - 0.75 : shrink_size;
+        diameter = new Vector2f(new_size, new_size);
+    }
 
 
 
